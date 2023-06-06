@@ -27,22 +27,12 @@ export function activate(context: vscode.ExtensionContext) {
 						enableScripts: true,
 					}
 				);
+
 				// And set its HTML content
 				panel.webview.html = getWebviewContent(content.toString());
 			});
 		})
 	);
-	// register vscode command of test extension
-	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.vsstack.test', async () => {
-			const answer = await vscode.window.showInformationMessage('How was your day?', 'good', 'bad');
-			if (answer === 'good') {
-				console.log('here it is!');
-			}
-		})
-	);
-	// register vscode command of inspectNetwork extension
-
 	// Adds the disposable object in a registration and will be properly disposed when deactivated
 	// context.subscriptions.push(disposable);
 }
