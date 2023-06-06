@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-//from log.txt
+//from log.txt file
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
