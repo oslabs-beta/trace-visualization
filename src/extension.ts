@@ -2,93 +2,70 @@ import * as vscode from 'vscode';
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
-	// register vscode command of getTelemetryLogFile extension
+	let webPanel: vscode.WebviewPanel | undefined;
+
+	// Register the command to get the telemetry log file
 	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', () => {
+		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
+			// VS Code extension enabled message
+			vscode.window.showInformationMessage('Your VS Code extension, VizStacks, has been enabled.');
+
 			// Access workspace of the user
 			const workspaceFolders = vscode.workspace.workspaceFolders;
 			if (!workspaceFolders) {
 				vscode.window.showErrorMessage('No workspace folder found.');
 				return;
 			}
-			// Access URI resource // file content
+			// Access URI resource // log file content
 			const workspaceRoot = workspaceFolders[0].uri;
-			vscode.workspace.fs.readFile(vscode.Uri.joinPath(workspaceRoot, 'log.txt')).then((content) => {
-				// console.log(content.toString());
-				vscode.window.showInformationMessage(content.toString());
+			const logFileUri = vscode.Uri.joinPath(workspaceRoot, 'log.txt');
 
-				// Create and show a new webview
-				const panel = vscode.window.createWebviewPanel(
-					'sequenceDiagram',
-					'System Sequence Diagram', // Title of the Panel
-					vscode.ViewColumn.Beside, // Editor column to show the new webview panel in.
-					// Enable JS within webview
-					{
-						enableScripts: true,
-					}
-				);
-				// And set its HTML content
-				panel.webview.html = getWebviewContent(content.toString());
+			// Close the existing panel if it is open
+			if (webPanel) {
+				webPanel.dispose();
+			}
+
+			// Create a new webview panel
+			webPanel = vscode.window.createWebviewPanel(
+				'sequenceDiagram',
+				'System Sequence Diagram', // title of the webView API
+				vscode.ViewColumn.Beside, // Position of the webView
+				// Enable JS within webview
+				{
+					enableScripts: true,
+				}
+			);
+
+			// Watch for updates in log txt file (fsPath provides access to FS path in string format)
+			// onDidChange will listen for changes in events
+			const monitor = vscode.workspace.createFileSystemWatcher(logFileUri.fsPath);
+			monitor.onDidChange(async () => {
+				// Read updated content in logFileUri
+				const updatedContent = await vscode.workspace.fs.readFile(logFileUri);
+
+				// Set the webview HTML content with the updated data
+				if (webPanel) {
+					webPanel.webview.html = getWebviewContent(updatedContent.toString());
+				}
+			});
+			webPanel.onDidDispose(() => {
+				monitor.dispose();
 			});
 		})
 	);
-	// register vscode command of test extension
-	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.vsstack.test', async () => {
-			const answer = await vscode.window.showInformationMessage('How was your day?', 'good', 'bad');
-			if (answer === 'good') {
-				console.log('here it is!');
-			}
-		})
-	);
-	// register vscode command of inspectNetwork extension
-
-	// Adds the disposable object in a registration and will be properly disposed when deactivated
-	// context.subscriptions.push(disposable);
 }
 
 function getWebviewContent(content: string): string {
+	console.log(content);
 	return `
-	<html>
-	<body>
-		<div>SOME KIND OF d3 sequence diagram</div>
-		<pre>${content}</pre>
-	</body>
-	</html>
+			<html>
+			<body>
+					<div>SOME KIND OF d3 sequence diagram</div>
+					<pre>${content}</pre>
+			</body>
+			</html>
 	`;
 }
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
-
-// export async function activate(context: vscode.ExtensionContext) {
-// 	console.log('Extension enabled.');
-// 	const parser = new XMLParser();
-// 	const response = await axios.get('https://blog.webdevsimplified.com/rss.xml');
-// 	const articles = parser.parse(response.data).rss.channel.item.map((article: any): any => {
-// 		return {
-// 			label: article.title,
-// 			detail: article.description,
-// 		};
-// 	});
-// 	console.log(articles);
-// 	console.log(parser.parse(response.data));
-
-// 	context.subscriptions.push(
-// 		vscode.commands.registerCommand('extension.vsstack.helloWorld', async () => {
-// 			const article = await vscode.window.showQuickPick(articles, {
-// 				matchOnDetail: true,
-// 			});
-// 			// HelloWorldPanel.createOrShow(context.extensionUri);
-// 		})
-// 	);
-
-// 	context.subscriptions.push(
-// 		vscode.commands.registerCommand('vsstack.askQuestion', async () => {
-// 			const answer = await vscode.window.showInformationMessage('How was your day?', 'good', 'bad');
-// 			if (answer === 'good') {
-// 				console.log('here it is!');
-// 			}
-// 		})
-// 	);
-// }
