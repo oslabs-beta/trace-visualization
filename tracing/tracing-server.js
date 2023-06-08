@@ -5,7 +5,6 @@ const { registerInstrumentations } = require('@opentelemetry/instrumentation');
 const { ConsoleSpanExporter, BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
 const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
-const io = require('socket.io-client');
 const express = require('express');
 const app = express();
 
@@ -28,8 +27,6 @@ provider.register();
 const rootDirectory = path.resolve(__dirname, '..');
 
 function logData(data) {
-	// const socket = io('http://localhost:8080');
-	// socket.emit('server tracing data', data);
 	fs.appendFileSync(path.join(rootDirectory, 'log.txt'), data);
 }
 
