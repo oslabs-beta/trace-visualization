@@ -79,13 +79,6 @@ provider.addSpanProcessor({
 app.use(
   cors({
     credentials: true,
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      "vscode-webview://18bppm5m72rmi8k7oeekcnb18fvmnnhusun34a3g85fk1jb9hjjo",
-    ],
-    // allowedHeaders: ["Content-Type", "Authorization"],
-    // methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
