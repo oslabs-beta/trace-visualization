@@ -30,7 +30,7 @@ function handleXhrRequest(xhr) {
       .then((response) => response.json())
       .then((data) => {
         // Handle the response from the backend
-        console.log(data);
+        console.log("confirmed");
       });
   });
 }
