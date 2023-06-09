@@ -31,12 +31,7 @@ const rootDirectory = path.resolve(__dirname, '..');
 const logFilePath = path.join(rootDirectory, 'log.txt');
 
 function logData(data) {
-	if (typeof data === 'object' || Array.isArray(data)) {
-		const jsonData = JSON.stringify(data);
-		fs.appendFileSync(logFilePath, jsonData + '\n\n');
-	} else {
-		fs.appendFileSync(logFilePath, data + '\n\n');
-	}
+	fs.appendFileSync(logFilePath, data + '\n');
 }
 
 // Add a span processor to log the span data
@@ -80,8 +75,8 @@ app.use(express.json());
 
 app.post('/api/log-xhr-data', (req, res) => {
 	const { requestPayload, responseData } = req.body;
-	logData(requestPayload);
-	logData(responseData);
+	logData(`Request Payload: ${requestPayload}`);
+	logData(`Response Data: ${responseData}`);
 	res.json({ status: 'success', message: 'XHR data received' });
 });
 
