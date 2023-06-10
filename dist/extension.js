@@ -123,19 +123,56 @@ function parseAndStoreData(data, context) {
         context.globalState.update('parsedData', existingArray);
     }
 }
+function generateDiagram(data) {
+    let mermaidData = '';
+    data.forEach((item) => {
+        const payload = item['Request Payload'];
+        const responseData = item['Response Data'];
+        const route = item['API route'];
+        const query = item['SQL Query'];
+        console.log(typeof route);
+        console.log(typeof responseData);
+        mermaidData = `
+	sequenceDiagram
+	participant User
+	participant Client
+	participant Server
+	participant Controller
+	participant Database
+	User->>Client: ${payload.toString()}
+	Client->>Server: ${route}
+	Server->>Database: ${query}
+	Database->>Server: Return Data
+	Server->>Client: Return Data
+	Client->>User: ${responseData.toString()}
+    `;
+    });
+    return mermaidData;
+}
 function getWebviewContent(content, context) {
-    const d3Data = JSON.stringify(context.globalState.get('parsedData'));
-    console.log(d3Data);
-    return `
-			<html>
-			<body>
-					<div>SOME KIND OF d3 sequence diagram</div>
-					<pre>${content}</pre>
-					<hr>
-					<br>
-			</body>
-			</html>
-	`;
+    const data = context.globalState.get('parsedData', []);
+    const mermaidData = generateDiagram(data);
+    const mermaidCode = `
+	<html>
+	<head>
+	</head>
+	<body>
+		Client-Server Diagram:
+		<pre class="mermaid">
+			${mermaidData}
+    </pre>
+		<div>History Log</div>
+		<br>
+		<hr>
+		<pre>${content}
+		<script type="module">
+		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+		mermaid.initialize({ startOnLoad: true });
+		</script>
+	</body>
+</html>
+  `;
+    return mermaidCode;
 }
 // This method is called when your extension is deactivated
 function deactivate() { }
