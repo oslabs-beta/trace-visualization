@@ -1,8 +1,21 @@
 import * as vscode from 'vscode';
+import { io } from 'socket.io-client';
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
 	let webPanel: vscode.WebviewPanel | undefined;
+
+	//copied code from /socket/client/socket.js to create client socket connection
+	const socket = io('http://localhost:44222');
+
+	socket.on('connect', () => {
+		socket.emit('socketId', {data: socket.id})
+		console.log('new connection: ', `id ${socket.id}: `, socket);
+	});
+	
+	socket.on('interaction', (data) => {
+		console.log(data);
+	});
 
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
