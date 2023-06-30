@@ -7,15 +7,21 @@ export function activate(context: vscode.ExtensionContext) {
 
 	//copied code from /socket/client/socket.js to create client socket connection
 	const socket = io('http://localhost:44222');
+	let socketId: string;
 
 	socket.on('connect', () => {
-		socket.emit('socketId', {data: socket.id})
+		socketId = socket.id;
+		socket.emit('socketId', {data: socket.id});
 		console.log('new connection: ', `id ${socket.id}: `, socket);
 	});
 	
 	socket.on('interaction', (data) => {
 		console.log(data);
 	});
+
+	socket.on('disconnect', () => {
+		console.log(`id ${socketId} disconnected`);
+	})
 
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
@@ -72,6 +78,9 @@ export function activate(context: vscode.ExtensionContext) {
 				// Clear the stored data from global state
 				prevContent = undefined;
 				context.globalState.update('parsedData', undefined);
+				// Close socket.io connection
+				console.log(`id ${socket.id} disconnected`)
+				socket.disconnect();
 			});
 		})
 	);

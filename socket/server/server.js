@@ -39,4 +39,8 @@ io.on('connection', (socket) => {
     socketId = data.data;
     console.log(`connected to new socket: id ${socketId}`);
   });
+
+  socket.on('disconnect', () => {
+    console.log(`id ${socketId} disconnected`)
+  })
 });
