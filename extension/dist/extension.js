@@ -7,6 +7,12 @@
 
 module.exports = require("vscode");
 
+/***/ }),
+/* 2 */
+/***/ ((module) => {
+
+module.exports = require("path");
+
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -43,9 +49,10 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.deactivate = exports.activate = void 0;
 const vscode = __webpack_require__(1);
+const path = __webpack_require__(2);
+let webPanel;
 // Activate extension the very first time
 function activate(context) {
-    let webPanel;
     // Register the command to get the telemetry log file
     context.subscriptions.push(vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
         // VS Code extension enabled message
@@ -130,8 +137,6 @@ function generateDiagram(data) {
         const responseData = item['Response Data'];
         const route = item['API route'];
         const query = item['SQL Query'];
-        console.log(typeof route);
-        console.log(typeof responseData);
         mermaidData = `
 	sequenceDiagram
 	participant User
@@ -152,19 +157,26 @@ function generateDiagram(data) {
 function getWebviewContent(content, context) {
     const data = context.globalState.get('parsedData', []);
     const mermaidData = generateDiagram(data);
+    // const cssUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, '../client/assets/style.css')));
+    // const reactUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, '../client/src/index.js')));
+    const testUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, './src/test.css')));
+    // console.log(context.extensionPath);
+    console.log(testUri);
+    // console.log(reactUri);
     const mermaidCode = `
 	<html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="${testUri}">
 	</head>
 	<body>
 		Client-Server Diagram:
 		<pre class="mermaid">
 			${mermaidData}
-    </pre>
+		</pre>
 		<div>History Log</div>
 		<br>
 		<hr>
-		<pre>${content}
+		<pre>${content}</pre>
 		<script type="module">
 		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 		mermaid.initialize({ startOnLoad: true });

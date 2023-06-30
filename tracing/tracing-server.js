@@ -12,6 +12,7 @@ const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
 
 // Optionally register instrumentation libraries
 registerInstrumentations({
+	traceExporter: new OTLPTraceExporter(),
 	instrumentations: [new HttpInstrumentation(), new PgInstrumentation()],
 });
 

@@ -1,9 +1,11 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
+
+let webPanel: vscode.WebviewPanel | undefined;
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
-	let webPanel: vscode.WebviewPanel | undefined;
-
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
@@ -116,9 +118,6 @@ function generateDiagram(data: AllData[]): string {
 		const route = item['API route'];
 		const query = item['SQL Query'];
 
-		console.log(typeof route);
-		console.log(typeof responseData);
-
 		mermaidData = `
 	sequenceDiagram
 	participant User
@@ -140,20 +139,26 @@ function generateDiagram(data: AllData[]): string {
 function getWebviewContent(content: string, context: vscode.ExtensionContext): string {
 	const data: AllData[] = context.globalState.get('parsedData', []) as AllData[];
 	const mermaidData = generateDiagram(data);
-
+	// const cssUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, '../client/assets/style.css')));
+	// const reactUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, '../client/src/index.js')));
+	const testUri = webPanel?.webview.asWebviewUri(vscode.Uri.file(path.join(context.extensionPath, './src/test.css')));
+	// console.log(context.extensionPath);
+	console.log(testUri);
+	// console.log(reactUri);
 	const mermaidCode = `
 	<html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="${testUri}">
 	</head>
 	<body>
 		Client-Server Diagram:
 		<pre class="mermaid">
 			${mermaidData}
-    </pre>
+		</pre>
 		<div>History Log</div>
 		<br>
 		<hr>
-		<pre>${content}
+		<pre>${content}</pre>
 		<script type="module">
 		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
 		mermaid.initialize({ startOnLoad: true });
