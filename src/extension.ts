@@ -1,8 +1,11 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
+
+let webPanel: vscode.WebviewPanel | undefined;
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
-	let webPanel: vscode.WebviewPanel | undefined;
+	console.log('test');
 
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
@@ -35,6 +38,10 @@ export function activate(context: vscode.ExtensionContext) {
 					enableScripts: true,
 				}
 			);
+
+			// webPanel.webview.onDidReceiveMessage((message) => {
+			// 	console.log('Received:', message);
+			// });
 
 			// Watch for updates in log txt file (fsPath provides access to FS path in string format)
 			// onDidChange will listen for changes in events
@@ -140,28 +147,53 @@ function generateDiagram(data: AllData[]): string {
 function getWebviewContent(content: string, context: vscode.ExtensionContext): string {
 	const data: AllData[] = context.globalState.get('parsedData', []) as AllData[];
 	const mermaidData = generateDiagram(data);
-
-	const mermaidCode = `
-	<html>
-	<head>
-	</head>
-	<body>
-		Client-Server Diagram:
-		<pre class="mermaid">
-			${mermaidData}
-    </pre>
-		<div>History Log</div>
-		<br>
-		<hr>
-		<pre>${content}
-		<script type="module">
-		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-		mermaid.initialize({ startOnLoad: true });
-		</script>
-	</body>
-</html>
-  `;
-	return mermaidCode;
+	const reactUrl = 'http://localhost:1337';
+	return `
+	  <html>
+	  <head>
+	    <style>
+	      body, html {
+	        margin: 0;
+	        padding: 0;
+	      }
+				#webviewContainer {
+          height: 100vh;
+					background-color: white;
+        }
+	      iframe {
+	        width: 100%;
+	        height: 100%;
+	      }
+	    </style>
+	  </head>
+	  <body>
+			<div id="webviewContainer">
+				<iframe src="${reactUrl}"></iframe>
+			</div>	  
+		</body>
+	</html>
+	`;
+	// 	const mermaidCode = `
+	// 	<html>
+	// 	<head>
+	// 	</head>
+	// 	<body>
+	// 		Client-Server Diagram:
+	// 		<pre class="mermaid">
+	// 			${mermaidData}
+	//     </pre>
+	// 		<div>History Log</div>
+	// 		<br>
+	// 		<hr>
+	// 		<pre>${content}
+	// 		<script type="module">
+	// 		import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+	// 		mermaid.initialize({ startOnLoad: true });
+	// 		</script>
+	// 	</body>
+	// </html>
+	//   `;
+	// 	return mermaidCode;
 }
 
 // This method is called when your extension is deactivated
