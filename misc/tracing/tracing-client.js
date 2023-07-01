@@ -20,7 +20,7 @@ function handleXhrRequest(xhr) {
 		// console.log("XHR Response Data:", xhr.responseText);
 		xhrData.responseData = xhr.responseText;
 
-		fetch('http://localhost:3001/api/log-xhr-data', {
+		fetch('http://localhost:44222/v1/traces', {
 			method: 'POST',
 			body: JSON.stringify(xhrData),
 			headers: {
