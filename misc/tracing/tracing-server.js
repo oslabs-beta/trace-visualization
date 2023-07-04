@@ -24,7 +24,7 @@ app.use(express.json());
 const expressServer = app.listen(PORT, () => console.log(`Injected server listening on port: ${PORT}...`));
 
 //Socket IO server
-const io = socketio(expressServer);
+const io = socketio(expressServer, {cors: {origin: '*'}});
 let socketId;
 
 let stackData = {};
@@ -36,7 +36,6 @@ app.post('/v1/traces', (req, res) => {
     console.log('sending data...');
     stackData = {};
   }
-  // io.to(socketId).emit('interaction', {data: req.body});
   res.sendStatus(200);
 })
 
