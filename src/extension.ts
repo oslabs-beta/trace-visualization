@@ -1,29 +1,10 @@
 import * as vscode from 'vscode';
-import { io } from 'socket.io-client';
 
 let webPanel: vscode.WebviewPanel | undefined;
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
 	console.log('test');
-
-	//copied code from /socket/client/socket.js to create client socket connection
-	const socket = io('http://localhost:44222');
-	let socketId: string;
-
-	socket.on('connect', () => {
-		socketId = socket.id;
-		socket.emit('socketId', {data: socket.id});
-		console.log('new connection: ', `id ${socket.id}: `, socket);
-	});
-	
-	socket.on('interaction', (data) => {
-		console.log(data);
-	});
-
-	socket.on('disconnect', () => {
-		console.log(`id ${socketId} disconnected`);
-	})
 
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
@@ -60,9 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 
 				webPanel.onDidDispose(() => {
-				// Close socket.io connection
-				console.log(`id ${socket.id} disconnected`)
-				socket.disconnect();
+					//webpanel close actions
 			});
 		})
 	);
