@@ -14,8 +14,8 @@ function queryParser(query){
     case 'SelectStmt': //Query uses Select
 
       queryInfo.statementType = 'Select'
-      const columns = {};
-      const colsArr = stmt.SelectStmt.targetList;
+      var columns = {};
+      var colsArr = stmt.SelectStmt.targetList;
 
       //if a join expression is used, the following code applies
       if (stmt.SelectStmt.fromClause[0].JoinExpr){
@@ -42,45 +42,69 @@ function queryParser(query){
       
       //if no join expression is used, the following code applies
       else{
-        const table = stmt.SelectStmt.fromClause[0].RangeVar.relname;
+        var table = stmt.SelectStmt.fromClause[0].RangeVar.relname;
         columns[table] = [];
         for (col of colsArr){
           const pair = col.ResTarget.val.ColumnRef.fields
             columns[table].push(pair[0].String.str);
         }
       }
-
       queryInfo.columns = columns;
       break;
     case 'InsertStmt' :
+      queryInfo.statementType = 'Insert'; //Query uses Insert
+      columns = {};
+      table = stmt.InsertStmt.relation.relname;
+      columns[table] = [];
+      colsArr = stmt.InsertStmt.cols;
+      for (cols of colsArr){
+        columns[table].push(cols.ResTarget.name)
+      }
+      queryInfo.columns = columns;
+
+      //if a return is used, the following code applies and adds a returningList property to query info
+      if (stmt.InsertStmt.returningList){
+        console.log('hi')
+        var returningCols = {};
+        returningCols[table] = [];
+        var retColsArr = stmt.InsertStmt.returningList;
+        for (retCols of retColsArr){
+          returningCols[table].push(retCols.ResTarget.val.ColumnRef.fields[0].String.str);
+        }
+        queryInfo.returningCols = returningCols;
+      }
       break;
-      default:
+    case 'UpdateStmt' :
+      queryInfo.statementType = 'Update';
+      break;
+    case 'DeleteStmt' :
+      queryInfo.statementType = 'Delete';
+      break;
+    default:
       console.log("query not recognized")
     }
     return queryInfo;
 }
 
-const query = 'SELECT holdings.holder_id AS user_id, holdings.stock_quantity, stocks.stock_id, stocks.ticker, stocks.company_name, stocks.closing_price, stocks.last_updated FROM "holdings" LEFT JOIN "stocks" ON "holdings"."stock_id"="stocks"."stock_id" WHERE "holder_id"=68'
 
-const query2 = 'SELECT word_id, word FROM "words"'
 
-// const query2 = `
-// INSERT INTO holdings (holder_id, stock_quantity, stock_id) 
-// SELECT $1, $3, (
-//     SELECT stock_id 
-//     FROM stocks
-//     WHERE stocks.ticker = $2
-//     )
-// WHERE EXISTS (
-//     SELECT * 
-//     FROM stocks 
-//     WHERE stocks.ticker = $2
-// );
-// `
-console.log(queryParser(query))
+const query = `
+INSERT INTO holdings (holder_id, stock_quantity, stock_id) 
+SELECT $1, $3, (
+    SELECT stock_id 
+    FROM stocks
+    WHERE stocks.ticker = $2
+    )
+WHERE EXISTS (
+    SELECT * 
+    FROM stocks 
+    WHERE stocks.ticker = $2
+);
+`
+const query2 = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id AS id, first_name AS "firstName", last_name AS "lastName", email'
+const pq = parse(query)
+const pg2 = parse(query2)
+
 
 console.log(queryParser(query2))
-
-// const pq1 = parse(query)
-// const pq2 = parse(query2)
 
