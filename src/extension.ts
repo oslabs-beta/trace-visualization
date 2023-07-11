@@ -2,6 +2,19 @@ import * as vscode from 'vscode';
 import { io } from 'socket.io-client';
 
 let webPanel: vscode.WebviewPanel | undefined;
+let socketData: DataObject | undefined;
+
+interface DataObject {
+	executionTime: string;
+	httpMethod: string;
+	requestPayload: string;
+	responseData: string;
+	route: string;
+	sqlQuery: string;
+	statusCode: string;
+}
+
+console.log('outside:', socketData);
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
@@ -13,17 +26,22 @@ export function activate(context: vscode.ExtensionContext) {
 
 	socket.on('connect', () => {
 		socketId = socket.id;
-		socket.emit('socketId', {data: socket.id});
+		socket.emit('socketId', { data: socket.id });
 		console.log('new connection: ', `id ${socket.id}: `, socket);
 	});
-	
-	socket.on('interaction', (data) => {
-		console.log(data);
+
+	socket.on('interaction', async (data) => {
+		try {
+			let socketData = await data;
+			console.log(socketData);
+		} catch (error) {
+			console.log('error confirmed');
+		}
 	});
 
 	socket.on('disconnect', () => {
 		console.log(`id ${socketId} disconnected`);
-	})
+	});
 
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
@@ -54,21 +72,21 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			);
 
-				// Set the webview HTML content with the updated data
-				if (webPanel) {
-					webPanel.webview.html = getWebviewContent(context);
-				}
+			// Set the webview HTML content with the updated data
+			if (webPanel) {
+				webPanel.webview.html = getWebviewContent(socketData, context);
+			}
 
-				webPanel.onDidDispose(() => {
+			webPanel.onDidDispose(() => {
 				// Close socket.io connection
-				console.log(`id ${socket.id} disconnected`)
+				console.log(`id ${socket.id} disconnected`);
 				socket.disconnect();
 			});
 		})
 	);
 }
 
-function getWebviewContent(context: vscode.ExtensionContext): string {
+function getWebviewContent(socketData: any, context: vscode.ExtensionContext): string {
 	const reactUrl = 'http://localhost:1337';
 	return `
 	  <html>
