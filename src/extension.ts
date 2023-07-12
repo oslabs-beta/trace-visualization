@@ -1,11 +1,20 @@
 import * as vscode from 'vscode';
 
 let webPanel: vscode.WebviewPanel | undefined;
+let socketData: DataObject | undefined;
+
+interface DataObject {
+	executionTime: string;
+	httpMethod: string;
+	requestPayload: string;
+	responseData: string;
+	route: string;
+	sqlQuery: string;
+	statusCode: string;
+}
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
-	console.log('test');
-
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
@@ -35,13 +44,13 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			);
 
-				// Set the webview HTML content with the updated data
-				if (webPanel) {
-					webPanel.webview.html = getWebviewContent(context);
-				}
+			// Set the webview HTML content with the updated data
+			if (webPanel) {
+				webPanel.webview.html = getWebviewContent(context);
+			}
 
-				webPanel.onDidDispose(() => {
-					//webpanel close actions
+			webPanel.onDidDispose(() => {
+				//webpanel close actions
 			});
 		})
 	);
