@@ -13,12 +13,8 @@ interface DataObject {
 	statusCode: string;
 }
 
-console.log('outside:', socketData);
-
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
-	console.log('test');
-
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
@@ -50,19 +46,17 @@ export function activate(context: vscode.ExtensionContext) {
 
 			// Set the webview HTML content with the updated data
 			if (webPanel) {
-				webPanel.webview.html = getWebviewContent(socketData, context);
+				webPanel.webview.html = getWebviewContent(context);
 			}
 
 			webPanel.onDidDispose(() => {
-				// Close socket.io connection
-				console.log(`id ${socket.id} disconnected`);
-				socket.disconnect();
+				//webpanel close actions
 			});
 		})
 	);
 }
 
-function getWebviewContent(socketData: any, context: vscode.ExtensionContext): string {
+function getWebviewContent(context: vscode.ExtensionContext): string {
 	const reactUrl = 'http://localhost:1337';
 	return `
 	  <html>
