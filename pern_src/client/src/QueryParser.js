@@ -1,4 +1,10 @@
 const { parse } = require('pgsql-parser');
+const db = require('./getTables');
+
+const query = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_type = \'BASE TABLE'
+
+let tables = await db.query(query);
+console.log(tables)
 
 function queryParser(query){
   const parsedQuery = parse(query);
@@ -101,10 +107,10 @@ WHERE EXISTS (
     WHERE stocks.ticker = $2
 );
 `
-const query2 = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id AS id, first_name AS "firstName", last_name AS "lastName", email'
-const pq = parse(query)
-const pg2 = parse(query2)
+// const query2 = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id AS id, first_name AS "firstName", last_name AS "lastName", email'
+// const pq = parse(query)
+// const pg2 = parse(query2)
 
 
-console.log(queryParser(query2))
+// console.log(queryParser(query2))
 
