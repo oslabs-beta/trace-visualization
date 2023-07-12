@@ -101,7 +101,7 @@ const filter = (requestBody) => {
   } else {
     for (const [k, v] of Object.entries(requestBody)) {
       if (keys.has(k)) {
-        stackData[k] = v;
+        stackData[k] = JSON.parse(v);
       }
     }
   }
