@@ -3,28 +3,21 @@ import './App.css';
 import Webview from '../src/pages/Webview';
 import socket from './socket-connection';
 import { Box, Typography } from '@mui/material';
-
-interface DataObject {
-	executionTime: string;
-	httpMethod: string;
-	requestPayload: string;
-	responseData: string;
-	route: string;
-	sqlQuery: string;
-	statusCode: string;
-}
+import { DataObject } from './Types';
 
 function App() {
 	const [socketId, setSocketId] = useState('');
 	const [allData, setAllData] = useState([]);
 	const [stackData, setStackData] = useState<DataObject>({
-		executionTime: '',
-		httpMethod: '',
-		requestPayload: '',
-		responseData: '',
-		route: '',
-		sqlQuery: '',
-		statusCode: '',
+		data: {
+			executionTime: '',
+			httpMethod: '',
+			requestPayload: undefined,
+			responseData: undefined,
+			route: '',
+			sqlQuery: '',
+			statusCode: undefined,
+		},
 	});
 
 	useEffect(() => {
@@ -45,7 +38,7 @@ function App() {
 
 	return (
 		<>
-			<Box sx={{ background: '#D7DADB' }}>
+			<Box sx={{ background: '#EEEEEE', maxWidth: 'auto' }}>
 				<div className="webview">
 					<Webview stackData={stackData} />
 				</div>

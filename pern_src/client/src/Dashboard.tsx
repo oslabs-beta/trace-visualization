@@ -6,9 +6,10 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Tab from '@mui/material/Tab';
 import Result from './Result';
+import { DataObject } from './Types';
 
 interface Props {
-	stackData: Object;
+	stackData: DataObject;
 }
 
 const Dashboard = ({ stackData }: Props) => {
@@ -20,7 +21,7 @@ const Dashboard = ({ stackData }: Props) => {
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', height: '40vh' }}>
+			<Box sx={{ display: 'flex', height: '50vh' }}>
 				<Container
 					sx={{
 						display: 'flex',
@@ -62,14 +63,14 @@ const Dashboard = ({ stackData }: Props) => {
 									flexDirection: 'row',
 								},
 							}}>
-							<TabPanel value="1" sx={{ flex: 1 }}>
+							<TabPanel value="1" sx={{ flex: 1, padding: 0 }}>
 								<Result stackData={stackData} />
 							</TabPanel>
-							<TabPanel value="2" sx={{ flex: 1 }}>
-								<Typography>ER Diagram</Typography>
+							<TabPanel value="2" sx={{ flex: 1, padding: 0 }}>
+								<Typography>Performance Under Construction</Typography>
 							</TabPanel>
-							<TabPanel value="3" sx={{ flex: 1 }}>
-								<Typography>History</Typography>
+							<TabPanel value="3" sx={{ flex: 1, padding: 0 }}>
+								<Typography>History Under Construction</Typography>
 							</TabPanel>
 						</Box>
 					</TabContext>
