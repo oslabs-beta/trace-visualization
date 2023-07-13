@@ -1,12 +1,7 @@
 const { parse } = require('pgsql-parser');
-const db = require('./getTables');
-
-const query = 'SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_type = \'BASE TABLE'
-
-let tables = await db.query(query);
-console.log(tables)
 
 function queryParser(query){
+  if (query.includes('*') === true) return 'Sorry, statements cannot contain "*" '
   const parsedQuery = parse(query);
   const stmt = parsedQuery[0].RawStmt.stmt;
 
@@ -14,7 +9,7 @@ function queryParser(query){
   const stmtType = Object.keys(stmt)[0];
 
   //initialize an query object to store info
-  const queryInfo = {};
+  const queryInfo = {SQL_Query : query};
 
   switch (stmtType){
     case 'SelectStmt': //Query uses Select
@@ -33,19 +28,8 @@ function queryParser(query){
             columns[pair[0].String.str].push(pair[1].String.str);
           }
         }
-
-        //join expressions will add an additional property to the query info object that highlights the type of join, primary key, and foreign key
-        const keys = stmt.SelectStmt.fromClause[0].JoinExpr.quals;
-        const primaryKey = keys.A_Expr.lexpr.ColumnRef.fields;
-        const foreignKey = keys.A_Expr.rexpr.ColumnRef.fields
-        const joinInfo = {
-          joinType : stmt.SelectStmt.fromClause[0].JoinExpr.jointype,
-          primaryKey: {table: primaryKey[0].String.str, column: primaryKey[1].String.str},
-          foreignKey: {table: foreignKey[0].String.str, column: foreignKey[1].String.str},
-        }
-        queryInfo.joinInfo = joinInfo
       } 
-      
+    
       //if no join expression is used, the following code applies
       else{
         var table = stmt.SelectStmt.fromClause[0].RangeVar.relname;
@@ -57,6 +41,7 @@ function queryParser(query){
       }
       queryInfo.columns = columns;
       break;
+
     case 'InsertStmt' :
       queryInfo.statementType = 'Insert'; //Query uses Insert
       columns = {};
@@ -68,20 +53,18 @@ function queryParser(query){
       }
       queryInfo.columns = columns;
 
-      //if a return is used, the following code applies and adds a returningList property to query info
-      if (stmt.InsertStmt.returningList){
-        console.log('hi')
-        var returningCols = {};
-        returningCols[table] = [];
-        var retColsArr = stmt.InsertStmt.returningList;
-        for (retCols of retColsArr){
-          returningCols[table].push(retCols.ResTarget.val.ColumnRef.fields[0].String.str);
-        }
-        queryInfo.returningCols = returningCols;
-      }
       break;
     case 'UpdateStmt' :
       queryInfo.statementType = 'Update';
+      columns = {};
+      table = stmt.UpdateStmt.relation.relname;
+      columns[table] = [];
+      colsArr = stmt.UpdateStmt.targetList;
+      for (cols of colsArr){
+        columns[table].push(cols.ResTarget.name)
+      }
+      queryInfo.columns = columns;
+
       break;
     case 'DeleteStmt' :
       queryInfo.statementType = 'Delete';
@@ -94,23 +77,6 @@ function queryParser(query){
 
 
 
-const query = `
-INSERT INTO holdings (holder_id, stock_quantity, stock_id) 
-SELECT $1, $3, (
-    SELECT stock_id 
-    FROM stocks
-    WHERE stocks.ticker = $2
-    )
-WHERE EXISTS (
-    SELECT * 
-    FROM stocks 
-    WHERE stocks.ticker = $2
-);
-`
-// const query2 = 'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING user_id AS id, first_name AS "firstName", last_name AS "lastName", email'
-// const pq = parse(query)
-// const pg2 = parse(query2)
+const query = 'DELETE FROM holdings AS h USING stocks AS s WHERE h.stock_id = s.stock_id AND s.ticker = $2 AND h.holder_id = $1;';
 
-
-// console.log(queryParser(query2))
-
+console.log(queryParser(query))
