@@ -6,6 +6,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Tab from '@mui/material/Tab';
 import { DataObject } from './Types';
+import SequenceDiagram from './SequenceDiagram';
 
 interface Props {
 	stackData: DataObject;
@@ -62,7 +63,7 @@ const Diagram = ({ stackData }: Props) => {
 								},
 							}}>
 							<TabPanel value="1" sx={{ flex: 1, padding: 1 }}>
-								<Typography>Sequence Diagram</Typography>
+								<SequenceDiagram stackData={stackData} />
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
 								<Typography>ER Diagram</Typography>

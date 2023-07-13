@@ -8,7 +8,6 @@ interface Props {
 }
 const Result = ({ stackData }: Props) => {
 	const stackDataArray = Object.entries(stackData);
-	console.log(stackDataArray);
 	const keyValue = Object.entries(stackDataArray[0][1]);
 
 	return (
