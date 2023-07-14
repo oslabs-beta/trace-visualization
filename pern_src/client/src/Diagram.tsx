@@ -5,9 +5,11 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Tab from '@mui/material/Tab';
+import { DataObject } from './Types';
+import SequenceDiagram from './SequenceDiagram';
 
 interface Props {
-	stackData: Object;
+	stackData: DataObject;
 }
 
 const Diagram = ({ stackData }: Props) => {
@@ -19,7 +21,7 @@ const Diagram = ({ stackData }: Props) => {
 
 	return (
 		<>
-			<Box sx={{ display: 'flex', height: '60vh' }}>
+			<Box sx={{ display: 'flex', height: '50vh' }}>
 				<Container
 					sx={{
 						display: 'flex',
@@ -60,10 +62,10 @@ const Diagram = ({ stackData }: Props) => {
 									flexDirection: 'row',
 								},
 							}}>
-							<TabPanel value="1" sx={{ flex: 1 }}>
-								<Typography>Sequence Diagram</Typography>
+							<TabPanel value="1" sx={{ flex: 1, padding: 1 }}>
+								<SequenceDiagram stackData={stackData} />
 							</TabPanel>
-							<TabPanel value="2" sx={{ flex: 1 }}>
+							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
 								<Typography>ER Diagram</Typography>
 							</TabPanel>
 						</Box>

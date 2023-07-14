@@ -2,15 +2,16 @@ import React from 'react';
 import Diagram from '../Diagram';
 import Dashboard from '../Dashboard';
 import { Box, Typography } from '@mui/material';
+import { DataObject } from '../Types';
 
 interface Props {
-	stackData: Object;
+	stackData: DataObject;
 }
 
 const Webview = ({ stackData }: Props) => {
 	return (
 		<>
-			<Box sx={{ background: '#D7DADB' }}>
+			<Box sx={{ background: '#EEEEEE', maxWidth: 'auto' }}>
 				<Diagram stackData={stackData} />
 				<Dashboard stackData={stackData} />
 			</Box>
