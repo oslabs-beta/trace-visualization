@@ -1,134 +1,260 @@
-import { Typography } from '@mui/material';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { DataObject } from './Types';
-import React, { useState, useEffect, useRef } from 'react';
-import * as d3 from 'd3';
+import ReactFlow, { Node, Edge, useNodesState, useEdgesState, Position, MarkerType, Background } from 'reactflow';
+import 'reactflow/dist/style.css';
+import './Sequence-diagram.css';
 
 interface Props {
 	stackData: DataObject;
 }
 
 const SequenceDiagram = ({ stackData }: Props) => {
-	const drawAreaRef = useRef<SVGSVGElement>(null);
-	const [isLoading, setIsLoading] = useState(false); // Add loading state
+	const requestPayload = JSON.stringify(stackData.data.requestPayload);
+	const httpMethod = stackData.data.httpMethod;
+	const route = stackData.data.route;
+	const sqlQuery = stackData.data.sqlQuery;
+	const responseData = JSON.stringify(stackData.data.responseData);
+	let flowRender = false;
+
+	if (httpMethod.length > 0) flowRender = true;
+
+	const nodeStyle = {
+		width: 100,
+		height: 50,
+		backgroundColor: '#EAFFF1',
+		border: '1px solid #999999',
+		borderRadius: 5,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	};
+
+	const responseNodeStyle = {
+		width: 275,
+		backgroundColor: 'white',
+		border: '1px solid #999999',
+		borderRadius: 5,
+	};
+
+	const responseNodeStyleSql = {
+		width: 445,
+		backgroundColor: 'white',
+		border: '1px solid #999999',
+		borderRadius: 5,
+	};
+
+	const initialStyle = {
+		backgroundColor: '#EEEEEE',
+		border: 'none',
+		width: 500,
+		fontStyle: 'italic',
+		fontSize: '20px',
+		color: 'gray',
+	};
+
+	const defaultViewport = { x: 0, y: 0, zoom: 1 };
+
+	const initialNodes: Node[] = [
+		{
+			id: '1',
+			sourcePosition: Position.Right,
+			targetPosition: Position.Bottom,
+			data: { label: 'User' },
+			position: { x: 0, y: 5 },
+			style: nodeStyle,
+		},
+		{
+			id: '2',
+			sourcePosition: Position.Right,
+			targetPosition: Position.Left,
+			data: { label: 'Client' },
+			position: { x: 175, y: 5 },
+			style: nodeStyle,
+		},
+		{
+			id: '3',
+			sourcePosition: Position.Right,
+			targetPosition: Position.Left,
+			data: { label: 'Server' },
+			position: { x: 350, y: 5 },
+			style: nodeStyle,
+		},
+		{
+			id: '4',
+			sourcePosition: Position.Right,
+			targetPosition: Position.Left,
+			data: { label: 'Controller' },
+			position: { x: 525, y: 5 },
+			style: nodeStyle,
+		},
+		{
+			id: '5',
+			sourcePosition: Position.Left,
+			targetPosition: Position.Left,
+			data: { label: 'Database' },
+			position: { x: 700, y: 5 },
+			style: nodeStyle,
+		},
+	];
+
+	const initialEdges: Edge[] = [
+		{
+			id: '6-7',
+			source: '6',
+			type: 'smoothstep',
+			target: '7',
+			animated: true,
+			style: { stroke: 'red' },
+			markerEnd: {
+				type: MarkerType.ArrowClosed,
+				color: 'red',
+			},
+		},
+		{
+			id: '7-8',
+			source: '7',
+			type: 'smoothstep',
+			target: '8',
+			animated: true,
+			style: { stroke: 'red' },
+			markerEnd: {
+				type: MarkerType.ArrowClosed,
+				color: 'red',
+			},
+		},
+		{
+			id: '8-9',
+			source: '8',
+			type: 'smoothstep',
+			target: '9',
+			animated: true,
+			style: { stroke: 'red' },
+			label: <div style={{ position: 'relative', textAlign: 'center', top: '-20px' }}>Return Data</div>,
+			markerEnd: {
+				type: MarkerType.ArrowClosed,
+				color: 'red',
+			},
+		},
+		{
+			id: '9-1',
+			source: '9',
+			type: 'smoothstep',
+			target: '1',
+			animated: true,
+			style: { stroke: 'red' },
+			markerEnd: {
+				type: MarkerType.ArrowClosed,
+				color: 'red',
+			},
+		},
+	];
+
+	const [nodes, setNodes] = useState<Node[]>(initialNodes);
+	const [edges, setEdges] = useEdgesState<Edge[]>(initialEdges);
 
 	useEffect(() => {
-		if (stackData) {
-			const classes = ['User', 'Client', 'Server', 'Controller', 'Database'];
-
-			const XPAD = 50;
-			const YPAD = 20;
-			const VERT_SPACE = 100;
-			const VERT_PAD = 60;
-
-			const CLASS_WIDTH = 80;
-			const CLASS_HEIGHT = 40;
-			const CLASS_LABEL_X_OFFSET = -25;
-			const CLASS_LABEL_Y_OFFSET = 25;
-
-			const MESSAGE_SPACE = 50;
-			const MESSAGE_LABEL_X_OFFSET = -40;
-			const MESSAGE_LABEL_Y_OFFSET = 70;
-			const MESSAGE_ARROW_Y_OFFSET = 80;
-
-			const CANVAS_WIDTH = 800;
-			const CANVAS_HEIGHT = 600;
-
-			const svg = d3.select(drawAreaRef.current).attr('width', CANVAS_WIDTH).attr('height', CANVAS_HEIGHT);
-
-			const messages = [
-				{ start: 0, end: 1, message: JSON.stringify(stackData.data.requestPayload) },
-				{ start: 1, end: 2, message: stackData.data.httpMethod },
-				{ start: 2, end: 4, message: stackData.data.sqlQuery },
-				{ start: 4, end: 2, message: 'Return Data' },
-				{ start: 2, end: 1, message: 'Return Data' },
-				{ start: 1, end: 0, message: JSON.stringify(stackData.data.responseData) },
+		if (!flowRender) {
+			const newNodes = [
+				...nodes,
+				{
+					id: '0',
+					data: {
+						label: 'Run a request to show your sequence diagram',
+					},
+					position: { x: 150, y: 250 },
+					style: initialStyle,
+				},
 			];
-
-			// Draw vertical lines
-			svg
-				.selectAll<SVGLineElement, string>('line')
-				.data(classes)
-				.enter()
-				.append('line')
-				.style('stroke', '#888')
-				.attr('x1', (c, i) => XPAD + i * VERT_SPACE)
-				.attr('y1', YPAD)
-				.attr('x2', (c, i) => XPAD + i * VERT_SPACE)
-				.attr('y2', YPAD + VERT_PAD + messages.length * MESSAGE_SPACE);
-
-			// Draw classes
-			svg
-				.selectAll<SVGGElement, string>('g.class')
-				.data(classes)
-				.enter()
-				.append('g')
-				.attr('transform', (c, i) => `translate(${XPAD + i * VERT_SPACE},${YPAD})`)
-				.attr('class', 'class')
-				.append('rect')
-				.attr('x', -CLASS_WIDTH / 2)
-				.attr('y', 0)
-				.attr('width', CLASS_WIDTH)
-				.attr('height', CLASS_HEIGHT)
-				.style('fill', '#CCC');
-
-			// Draw class labels
-			svg
-				.selectAll<SVGTextElement, string>('text.class-label')
-				.data(classes)
-				.enter()
-				.append('text')
-				.text((c) => c)
-				.attr('dx', 0) // Set dx to 0
-				.attr('dy', CLASS_HEIGHT / 2 - 25) // Adjust dy to center the text vertically
-				.attr('text-anchor', 'middle') // Center the text horizontally
-				.attr('alignment-baseline', 'middle') // Center the text vertically
-				.attr('transform', (c, i) => `translate(${XPAD + i * VERT_SPACE},${YPAD + CLASS_HEIGHT / 2 + 5})`) // Translate the text to the center of the class rectangle
-				.attr('class', 'class-label');
-
-			// Draw message arrows
-			svg
-				.selectAll<SVGLineElement, typeof messages>('line.message')
-				.data(messages)
-				.enter()
-				.append('line')
-				.style('stroke', 'black')
-				.attr('x1', (m) => XPAD + m.start * VERT_SPACE)
-				.attr('y1', (m, i) => YPAD + MESSAGE_ARROW_Y_OFFSET + i * MESSAGE_SPACE)
-				.attr('x2', (m) => XPAD + m.end * VERT_SPACE)
-				.attr('y2', (m, i) => YPAD + MESSAGE_ARROW_Y_OFFSET + i * MESSAGE_SPACE)
-				.attr('marker-end', 'url(#end)');
-
-			// Draw message labels
-			const messageLabels = svg.selectAll<SVGTextElement, typeof messages>('text.message-label').data(messages);
-			messageLabels
-				.enter()
-				.append('text')
-				.merge(messageLabels)
-				.text((m) => m.message)
-				.attr('dx', MESSAGE_LABEL_X_OFFSET)
-				.attr('dy', MESSAGE_LABEL_Y_OFFSET)
-				.attr('transform', (m, i) => `translate(${XPAD + MESSAGE_LABEL_X_OFFSET + ((m.end - m.start) * VERT_SPACE) / 2 + m.start * VERT_SPACE},${YPAD + MESSAGE_LABEL_Y_OFFSET + i * MESSAGE_SPACE})`)
-				.attr('class', 'message-label');
-
-			// Arrow style
-			svg
-				.append('svg:defs')
-				.append('svg:marker')
-				.attr('id', 'end')
-				.attr('viewBox', '0 -5 10 10')
-				.attr('refX', 10)
-				.attr('refY', 0)
-				.attr('markerWidth', 10)
-				.attr('markerHeight', 10)
-				.attr('orient', 'auto')
-				.append('svg:path')
-				.attr('d', 'M0,-5L10,0L0,5');
-
-			setIsLoading(false); // Mark loading as complete once the data is available
+			setNodes(newNodes);
 		}
-	}, [stackData]);
+		if (flowRender) {
+			const filteredNodes = nodes.filter((node) => node.id !== '0');
+			const newNodes = [
+				...filteredNodes,
+				{
+					id: '6',
+					sourcePosition: Position.Bottom,
+					targetPosition: Position.Bottom,
+					data: {
+						label: (
+							<div className="nowheel align" style={{ height: '50px', overflowY: 'auto', display: 'flex', flexDirection: 'column' }}>
+								<div className="bold">Request Payload:</div>
+								<div>{requestPayload}</div>
+							</div>
+						),
+					},
+					position: { x: 0, y: 74 },
+					style: responseNodeStyle,
+				},
+				{
+					id: '7',
+					sourcePosition: Position.Bottom,
+					targetPosition: Position.Left,
+					data: {
+						label: (
+							<div className="nowheel align" style={{ height: '50px', overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
+								<div className="bold">Route:</div>
+								<div>{route}</div>
+							</div>
+						),
+					},
+					position: { x: 175, y: 166 },
+					style: responseNodeStyle,
+				},
+				{
+					id: '8',
+					sourcePosition: Position.Right,
+					targetPosition: Position.Left,
+					data: {
+						label: (
+							<div className="nowheel align" style={{ height: '60px', overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
+								<div className="bold">SQL Query:</div>
+								<div>{sqlQuery}</div>
+							</div>
+						),
+					},
+					position: { x: 350, y: 260 },
+					style: responseNodeStyleSql,
+				},
+				{
+					id: '9',
+					sourcePosition: Position.Left,
+					targetPosition: Position.Right,
+					data: {
+						label: (
+							<div className="nowheel align" style={{ height: '60px', overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
+								<div className="bold">Response Data:</div>
+								<div>{responseData}</div>
+							</div>
+						),
+					},
+					position: { x: 175, y: 366 },
+					style: responseNodeStyleSql,
+				},
+			];
+			setNodes(newNodes);
+		}
+	}, [requestPayload]);
 
-	return <svg id="drawArea" ref={drawAreaRef}></svg>;
+	const customHandleStyle = `
+  .react-flow__handle[data-nodeid='0'],
+  .react-flow__handle[data-nodeid='1'],
+  .react-flow__handle[data-nodeid='2'],
+  .react-flow__handle[data-nodeid='3'],
+  .react-flow__handle[data-nodeid='4'],
+  .react-flow__handle[data-nodeid='5'] {
+    opacity: 0;
+  }
+`;
+
+	return (
+		<div style={{ width: '95vw', height: '50vh' }}>
+			<style>{customHandleStyle}</style>
+			<ReactFlow nodes={nodes} edges={edges} defaultViewport={defaultViewport}>
+				<Background />
+			</ReactFlow>
+		</div>
+	);
 };
 
 export default SequenceDiagram;
