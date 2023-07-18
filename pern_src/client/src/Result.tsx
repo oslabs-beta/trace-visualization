@@ -12,11 +12,11 @@ const Result = ({ stackData }: Props) => {
 
 	return (
 		<>
-			<TableContainer sx={{ maxHeight: '43vh', maxWidth: 'auto', overflow: 'auto' }} component={Paper}>
+			<TableContainer sx={{ maxHeight: '43vh', maxWidth: 'auto', overflow: 'auto', wordBreak: 'break-word' }} component={Paper}>
 				<Table stickyHeader sx={{ minWidth: 650 }} size="medium">
 					<TableHead>
 						<TableRow>
-							<TableCell sx={{ width: '200px', fontWeight: 'bold' }} align="left">
+							<TableCell sx={{ width: '200px', fontWeight: 'bold', wordWrap: 'break-word' }} align="left">
 								Metrics
 							</TableCell>
 							<TableCell sx={{ fontWeight: 'bold' }} align="left">
@@ -29,7 +29,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								Request Payload
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{JSON.stringify(stackData.data.requestPayload)}
 							</TableCell>
 						</TableRow>
@@ -37,7 +37,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								HTTP Method
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{stackData.data.httpMethod}
 							</TableCell>
 						</TableRow>
@@ -45,7 +45,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								Route
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{stackData.data.route}
 							</TableCell>
 						</TableRow>
@@ -53,7 +53,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								SQL Query
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{stackData.data.sqlQuery}
 							</TableCell>
 						</TableRow>
@@ -61,7 +61,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								Response Data
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{JSON.stringify(stackData.data.responseData)}
 							</TableCell>
 						</TableRow>
@@ -69,7 +69,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								Status Code
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{stackData.data.statusCode}
 							</TableCell>
 						</TableRow>
@@ -77,7 +77,7 @@ const Result = ({ stackData }: Props) => {
 							<TableCell component="th" scope="row">
 								Execution Time
 							</TableCell>
-							<TableCell component="th" scope="row">
+							<TableCell component="th" scope="row" sx={{ overflowWrap: 'break-word', overflow: 'auto' }}>
 								{stackData.data.executionTime}
 							</TableCell>
 						</TableRow>
