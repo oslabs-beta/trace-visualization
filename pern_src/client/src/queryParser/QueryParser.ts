@@ -1,6 +1,6 @@
 const { parse } = require('pgsql-parser');
 
-function queryParser(query){
+function queryParser(query : string){
   if (query.includes('*') === true) return 'Sorry, statements cannot contain "*" '
   const parsedQuery = parse(query);
   const stmt = parsedQuery[0].RawStmt.stmt;
@@ -9,19 +9,28 @@ function queryParser(query){
   const stmtType = Object.keys(stmt)[0];
 
   //initialize an query object to store info
-  const queryInfo = {SQL_Query : query};
+  interface QueryInfo {
+      [key: string]: any;
+    }
+
+  const queryInfo : QueryInfo = {SQL_Query : query};
 
   switch (stmtType){
     case 'SelectStmt': //Query uses Select
 
       queryInfo.statementType = 'Select'
-      var columns = {};
+
+      //initialize an query object to store columns info
+    interface Columns {
+      [key: string]: Array<any>;
+    }
+      var columns : Columns = {};
       var colsArr = stmt.SelectStmt.targetList;
 
       //if a join expression is used, the following code applies
       if (stmt.SelectStmt.fromClause[0].JoinExpr){
-        for (col of colsArr){
-          const pair = col.ResTarget.val.ColumnRef.fields
+        for (let i = 0; i < colsArr.length; i++){
+          const pair = colsArr[i].ResTarget.val.ColumnRef.fields
           if (!columns[pair[0].String.str]){
             columns[pair[0].String.str] = [pair[1].String.str];
           } else{
@@ -34,8 +43,8 @@ function queryParser(query){
       else{
         var table = stmt.SelectStmt.fromClause[0].RangeVar.relname;
         columns[table] = [];
-        for (col of colsArr){
-          const pair = col.ResTarget.val.ColumnRef.fields
+        for (let i = 0; i < colsArr.length; i++){
+          const pair = colsArr[i].ResTarget.val.ColumnRef.fields
             columns[table].push(pair[0].String.str);
         }
       }
@@ -48,8 +57,8 @@ function queryParser(query){
       table = stmt.InsertStmt.relation.relname;
       columns[table] = [];
       colsArr = stmt.InsertStmt.cols;
-      for (cols of colsArr){
-        columns[table].push(cols.ResTarget.name)
+      for (let i = 0; i < colsArr.length; i++){
+        columns[table].push(colsArr[i].ResTarget.name)
       }
       queryInfo.columns = columns;
 
@@ -60,8 +69,8 @@ function queryParser(query){
       table = stmt.UpdateStmt.relation.relname;
       columns[table] = [];
       colsArr = stmt.UpdateStmt.targetList;
-      for (cols of colsArr){
-        columns[table].push(cols.ResTarget.name)
+      for (let i = 0; i < colsArr.length; i++){
+        columns[table].push(colsArr[i].ResTarget.name)
       }
       queryInfo.columns = columns;
 
