@@ -1,5 +1,5 @@
-import React from 'react';
-import { Box, Typography, TextField } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Box, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -8,6 +8,8 @@ import Tab from '@mui/material/Tab';
 import { DataObject } from './Types';
 import SequenceDiagram from './SequenceDiagram';
 import DatabaseDiagram from './DatabaseDiagram';
+import isValidUri from './utils/validateUri';
+import getTableData from './services/databaseService';
 
 interface Props {
 	stackData: DataObject;
@@ -16,6 +18,19 @@ interface Props {
 const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
 	const [pgUri, setPgUri] = React.useState('');
+	const [tables, setTables] = React.useState({});
+
+	useEffect(() => {
+
+		const fetchData = async () => {
+			if (isValidUri(pgUri)) {
+				const data = await getTableData(pgUri)
+				setTables(data);
+			}
+		}
+
+		fetchData();
+	},[pgUri])
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
@@ -81,7 +96,7 @@ const Diagram = ({ stackData }: Props) => {
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
 								<div style={{ width: '81vw'}}>
-									<DatabaseDiagram pgUri={pgUri}/>
+									<DatabaseDiagram tables={tables}/>
 								</div>
 							</TabPanel>
 						</Box>
