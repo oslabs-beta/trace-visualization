@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -7,6 +7,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import Tab from '@mui/material/Tab';
 import { DataObject } from './Types';
 import SequenceDiagram from './SequenceDiagram';
+import DatabaseDiagram from './DatabaseDiagram';
 
 interface Props {
 	stackData: DataObject;
@@ -14,9 +15,14 @@ interface Props {
 
 const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
+	const [pgUri, setPgUri] = React.useState('');
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
+	};
+
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setPgUri(event.currentTarget.value);
 	};
 
 	return (
@@ -36,6 +42,7 @@ const Diagram = ({ stackData }: Props) => {
 								borderBottom: 1,
 								borderColor: 'divider',
 								display: 'flex',
+								justifyContent: 'space-between',
 								flexDirection: 'column',
 								'@media (min-width: 600px)': {
 									flexDirection: 'row',
@@ -53,6 +60,13 @@ const Diagram = ({ stackData }: Props) => {
 								<Tab sx={{ pr: 4 }} label="Sequence Diagram" value="1" />
 								<Tab sx={{ pr: 4 }} label="ER Diagram" value="2" />
 							</TabList>
+							<TextField 
+								variant='filled'
+								sx = {{
+								}}
+								label='PG URI'
+								onChange={handleInput}
+							/>
 						</Box>
 						<Box
 							sx={{
@@ -66,7 +80,9 @@ const Diagram = ({ stackData }: Props) => {
 								<SequenceDiagram stackData={stackData} />
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
-								<Typography>ER Diagram</Typography>
+								<div style={{ width: '81vw'}}>
+									<DatabaseDiagram pgUri={pgUri}/>
+								</div>
 							</TabPanel>
 						</Box>
 					</TabContext>
