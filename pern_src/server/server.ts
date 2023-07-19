@@ -1,4 +1,5 @@
 import express, { Express, NextFunction, Request, Response, } from 'express';
+import databaseController from './controllers/databaseController';
 
 const app: Express = express();
 const PORT = 12720;
@@ -7,7 +8,9 @@ const PORT = 12720;
 app.use(express.json());
 
 //routes
-
+app.get('/getDatabase/:uri', databaseController.getDatabase, (req, res) => {
+  return res.send(200).json(res.locals.tableData);
+})
 
 //global error handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
