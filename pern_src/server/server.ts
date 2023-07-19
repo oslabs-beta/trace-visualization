@@ -8,8 +8,8 @@ const PORT = 12720;
 app.use(express.json());
 
 //routes
-app.get('/getDatabase/:uri', databaseController.getDatabase, (req, res) => {
-  return res.send(200).json(res.locals.tableData);
+app.get('/api/getDatabase/:pgUri', databaseController.getDatabase, (req, res) => {
+  return res.status(200).json(res.locals.tableData);
 })
 
 //global error handling
