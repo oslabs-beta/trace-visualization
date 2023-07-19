@@ -1,10 +1,12 @@
 import express, { Express, NextFunction, Request, Response, } from 'express';
+import cors from 'cors';
 import databaseController from './controllers/databaseController';
 
 const app: Express = express();
 const PORT = 12720;
 
 //middleware
+app.use(cors());
 app.use(express.json());
 
 //routes
