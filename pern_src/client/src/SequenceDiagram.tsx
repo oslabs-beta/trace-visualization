@@ -60,7 +60,7 @@ const SequenceDiagram = ({ stackData }: Props) => {
     color: "gray",
   };
 
-  const defaultViewport = { x: 0, y: 0, zoom: 0.55 };
+  const defaultViewport = { x: 0, y: 0, zoom: 1 };
 
   const initialNodes: Node[] = [
     {
@@ -175,7 +175,7 @@ const SequenceDiagram = ({ stackData }: Props) => {
           data: {
             label: "Run a request to show your sequence diagram",
           },
-          position: { x: 150, y: 250 },
+          position: { x: 150, y: 200 },
           style: initialStyle,
         },
       ];
@@ -296,9 +296,11 @@ const SequenceDiagram = ({ stackData }: Props) => {
   return (
     <div style={{ width: "95vw", height: "45vh" }}>
       <style>{customHandleStyle}</style>
-      <ReactFlow nodes={nodes} edges={edges} defaultViewport={defaultViewport}>
-        <Background />
-      </ReactFlow>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        defaultViewport={defaultViewport}
+      ></ReactFlow>
     </div>
   );
 };
