@@ -10,6 +10,7 @@ import SequenceDiagram from './SequenceDiagram';
 import DatabaseDiagram from './DatabaseDiagram';
 import isValidUri from './utils/validateUri';
 import getTableData from './services/databaseService';
+import queryParser from './pages/services/queryParserService';
 
 interface Props {
 	stackData: DataObject;
@@ -19,7 +20,8 @@ const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
 	const [pgUri, setPgUri] = React.useState('');
 	const [tables, setTables] = React.useState({});
-
+	const [queryInfo, setQueryInfo] = React.useState('')
+	console.log(stackData.data.sqlQuery)
 	useEffect(() => {
 
 		const fetchData = async () => {
@@ -28,9 +30,9 @@ const Diagram = ({ stackData }: Props) => {
 				setTables(data);
 			}
 		}
-
 		fetchData();
-	},[pgUri])
+		const queryData = queryParser(stackData.data.sqlQuery)
+	},[pgUri, stackData.data.sqlQuery])
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
