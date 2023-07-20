@@ -18,13 +18,33 @@ interface Props {
 }
 
 const Performance = ({ stackData, allData }: Props) => {
-  const executionTime = stackData.data.executionTime;
-  const requestPayload = JSON.stringify(stackData.data.requestPayload);
-  const httpMethod = stackData.data.httpMethod;
-  const route = stackData.data.route;
-  const sqlQuery = stackData.data.sqlQuery;
-  const responseData = JSON.stringify(stackData.data.responseData);
-  const statusCode = stackData.data.statusCode;
+  // const executionTime = stackData.data.executionTime;
+  // const requestPayload = JSON.stringify(stackData.data.requestPayload);
+  // const httpMethod = stackData.data.httpMethod;
+  // const route = stackData.data.route;
+  // const sqlQuery = stackData.data.sqlQuery;
+  // const responseData = JSON.stringify(stackData.data.responseData);
+  // const statusCode = stackData.data.statusCode;
+
+  const [updatedData, setUpdatedData] = useState<{
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      backgroundColor: string;
+    }[];
+  }>({
+    labels: [],
+    datasets: [
+      {
+        label: "Execution Time",
+        data: [],
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+    ],
+  });
 
   ChartJS.register(
     CategoryScale,
@@ -50,14 +70,15 @@ const Performance = ({ stackData, allData }: Props) => {
     },
   };
 
-  const [executionTimeData, setExecutionTimeData] = useState<{
+  interface ExecutionTimeData {
     [key: string]: number;
-  }>({});
+  }
+
+  const [executionTimeData, setExecutionTimeData] = useState<ExecutionTimeData>(
+    {}
+  );
 
   const labels = allData.map((el) => {
-    // traverse through allData
-    // check if route exists in an element in allData array
-    // if so, take existing execution time of matching route and add it with new execution time
     let url = new URL("/", el.data.route);
     let urlCount = url.origin.length;
     let split = el.data.route.split("");
@@ -81,8 +102,12 @@ const Performance = ({ stackData, allData }: Props) => {
     ],
   };
 
+  interface NewData {
+    [key: string]: { sum: number; count: number };
+  }
+
   useEffect(() => {
-    const newData: { [key: string]: { sum: number; count: number } } = {};
+    const newData: NewData = {};
     labels.forEach((label, index) => {
       if (!newData[label]) {
         newData[label] = {
@@ -100,12 +125,30 @@ const Performance = ({ stackData, allData }: Props) => {
     for (const [label, { sum, count }] of Object.entries(newData)) {
       averageData[label] = sum / count;
     }
+    const uniqueLabels = Object.keys(newData);
+    const averageExecutionTimes = Object.values(averageData);
+    const updatedData = {
+      labels: uniqueLabels,
+      datasets: [
+        {
+          label: "Execution Time",
+          data: averageExecutionTimes,
+          borderColor: "rgb(255, 99, 132)",
+          backgroundColor: "rgba(255, 99, 132, 0.5)",
+        },
+      ],
+    };
+    setUpdatedData(updatedData);
+    console.log("average data:", averageData);
     setExecutionTimeData(averageData);
   }, [allData]);
 
+  console.log("execution time average:", executionTimeData);
+  console.log("allData:", allData);
+
   return (
     <>
-      <Bar data={data} options={options} />
+      <Bar data={updatedData} options={options} />
     </>
   );
 };
