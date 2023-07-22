@@ -14,6 +14,10 @@ app.get('/api/getDatabase/:pgUri', databaseController.getDatabase, (req, res) =>
   return res.status(200).json(res.locals.tableData);
 })
 
+app.get('/api/getParsedQuery/:query', databaseController.parseQuery, (req, res) => {
+  return res.status(200).json(res.locals.parsedQuery);
+})
+
 //global error handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.log(err);

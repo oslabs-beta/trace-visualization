@@ -40,6 +40,8 @@ NodeStyles.OpaqueNode = ({ data }: any) => {
 
 NodeStyles.TableNode = ({ data }: any) => {
 
+  let testColor: string = 'green';
+
   return (
     <div style={{border: '1px solid black', borderRadius: '0.4rem'}}>
       <table style={
@@ -61,7 +63,7 @@ NodeStyles.TableNode = ({ data }: any) => {
                 case 'Select' :
                 return <div>
                 <tr>
-                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:'green'}}>
+                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:`${testColor}`}}>
                       {field}
                     </td>
                   </tr> 
