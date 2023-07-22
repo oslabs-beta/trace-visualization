@@ -1,3 +1,4 @@
+//@ts-ignore
 import { parse } from 'pgsql-parser';
 
 function queryParser(query : string){

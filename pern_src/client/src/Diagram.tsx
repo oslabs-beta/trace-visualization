@@ -21,10 +21,6 @@ const Diagram = ({ stackData }: Props) => {
 	const [pgUri, setPgUri] = React.useState('');
 	const [tables, setTables] = React.useState({});
 	const [queryInfo, setQueryInfo] = React.useState({})
-
-	//query parser service
-	// const queryData = queryParser(stackData.data.sqlQuery)
-	// setQueryInfo(queryData)
 	
 	useEffect(() => {
 		
@@ -39,8 +35,12 @@ const Diagram = ({ stackData }: Props) => {
 
 	useEffect(() => {
 		const fetchQueryData = async () => {
-			const queryData = await queryParser(stackData.data.sqlQuery)
+			if (stackData.data.sqlQuery){
+				const queryData = await queryParser(stackData.data.sqlQuery)
 			setQueryInfo(queryData);
+			console.log(queryData)
+			}
+			
 		}
 		fetchQueryData();
 	},[stackData.data.sqlQuery])
@@ -109,7 +109,7 @@ const Diagram = ({ stackData }: Props) => {
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
 								<div style={{ width: '81vw'}}>
-									<DatabaseDiagram tables={tables}/>
+									<DatabaseDiagram tables={tables} queryInfo={queryInfo}/>
 								</div>
 							</TabPanel>
 						</Box>

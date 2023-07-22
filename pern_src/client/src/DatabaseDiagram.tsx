@@ -7,27 +7,17 @@ interface Tables {
   [key: string]: any[]
 }
 
-interface Props {
-	tables: Tables;
+interface QueryInfo {
+  [key: string]: any[]
 }
 
-const DatabaseDiagram = ({ tables }: Props) => {
-  const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode}), []);
+interface Props {
+	tables: Tables,
+  queryInfo: QueryInfo;
+}
 
-  const queryInfo : any = {
-    SQL_Query : ` SELECT holdings.holder_id AS user_id, holdings.stock_quantity, stocks.stock_id, stocks.ticker, stocks.company_name, stocks.closing_price, stocks.last_updated FROM "holdings" LEFT JOIN "stocks" ON "holdings"."stock_id"="stocks"."stock_id" WHERE "holder_id"=$1
-    `,
-    statementType : 'Select',
-    columns : {
-      holdings: [ 'holder_id', 'stock_quantity' ],
-      stocks: [
-        'stock_id',
-        'ticker',
-        'company_name',
-        'closing_price',
-      ]
-      }
-  }
+const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
+  const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode}), []);
 
   const nodeType = (key: string, i : number, queryInfo: any) => {
 
