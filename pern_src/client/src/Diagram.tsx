@@ -10,6 +10,7 @@ import SequenceDiagram from './SequenceDiagram';
 import DatabaseDiagram from './DatabaseDiagram';
 import isValidUri from './utils/validateUri';
 import getTableData from './services/databaseService';
+import queryParser from './services/queryParserService';
 
 interface Props {
 	stackData: DataObject;
@@ -19,6 +20,7 @@ const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
 	const [pgUri, setPgUri] = React.useState('');
 	const [tables, setTables] = React.useState({});
+	const [queryInfo, setQueryInfo] = React.useState({})
 
 	useEffect(() => {
 
@@ -31,6 +33,17 @@ const Diagram = ({ stackData }: Props) => {
 
 		fetchData();
 	},[pgUri])
+
+	useEffect(() => {
+		const fetchQueryData = async () => {
+			if (stackData.data.sqlQuery){
+				const queryData = await queryParser(stackData.data.sqlQuery)
+			setQueryInfo(queryData);
+			}
+
+		}
+		fetchQueryData();
+	},[stackData.data.sqlQuery])
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
@@ -96,7 +109,7 @@ const Diagram = ({ stackData }: Props) => {
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
 								<div style={{ width: '81vw'}}>
-									<DatabaseDiagram tables={tables}/>
+									<DatabaseDiagram tables={tables} queryInfo={queryInfo}/>
 								</div>
 							</TabPanel>
 						</Box>
