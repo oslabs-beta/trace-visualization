@@ -26,7 +26,7 @@
 		"commands": [
 			{
 				"command": "extension.vsstack.getTelemetryLogFile",
-				"title": "Get Telemetry Log File Workspace"
+				"title": "Enable Trace Visualization"
 			}
 		]
 	},
