@@ -38,7 +38,6 @@ const Diagram = ({ stackData }: Props) => {
 			if (stackData.data.sqlQuery){
 				const queryData = await queryParser(stackData.data.sqlQuery)
 			setQueryInfo(queryData);
-			console.log(queryData)
 			}
 			
 		}

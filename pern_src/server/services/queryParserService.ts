@@ -85,11 +85,4 @@ function queryParser(query : string){
     return queryInfo;
 }
 
-const query = `
-INSERT INTO reviews (trail_id, user_id, review, stars, date)
-VALUES ($1, $2, $3, $4, $5) RETURNING review_id
-`;
-
-console.log(queryParser(query))
-
 export default queryParser

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import ReactFlow, { Controls, Background, Node } from 'reactflow';
-import NodeStyles from './TableNode';
+import NodeStyles from './NodeStyles';
 import 'reactflow/dist/style.css';
 
 interface Tables {
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
-  const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode}), []);
+  const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode, legendNode: NodeStyles.LegendNode}), []);
 
   const nodeType = (key: string, i : number, queryInfo: any) => {
 
@@ -44,6 +44,14 @@ const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
   const nodes : Node[] = Object.keys(tables).map((key, i) => (
     nodeType(key, i, queryInfo)
   ))
+  nodes.push(
+    {
+      id: 'Legend',
+    position: { x: 0, y: 200 },
+    data: { tableName: 'Statement Type'},
+    type: 'legendNode',
+    }
+  )
   return (
     <div style={{ height: '44vh' }}>
       <ReactFlow nodes={nodes} nodeTypes={nodeTypes}>

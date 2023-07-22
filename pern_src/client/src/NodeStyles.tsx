@@ -1,4 +1,45 @@
 const NodeStyles : any = {};
+NodeStyles.LegendNode = ({ data }: any) => {
+  return (
+    <div style={{border: '1px solid black', borderRadius: '0.4rem'}}>
+      <table style={
+        {
+          minWidth: 100, 
+          borderCollapse: 'collapse',
+        }}>
+        <thead style={{backgroundColor: 'white'}}>
+          <tr>
+            <th style={{borderBottom: '1px solid black', borderTopLeftRadius: '0.4rem', borderTopRightRadius: '0.4rem'}}>
+              <span style={{color:'black'}}>{data.tableName}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody style={{backgroundColor: 'white'}}>
+          <tr>
+            <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.8rem', borderBottomRightRadius: '0.4rem', backgroundColor : `green`}}>
+              Select
+            </td>
+          </tr>
+          <tr>
+            <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.8rem', borderBottomRightRadius: '0.4rem', backgroundColor : `yellow`}}>
+              Insert
+            </td>
+          </tr> 
+          <tr>
+            <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.8rem', borderBottomRightRadius: '0.4rem', backgroundColor : `Orange`}}>
+              Update
+            </td>
+          </tr>
+          <tr>
+            <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.8rem', borderBottomRightRadius: '0.4rem', backgroundColor : `red`}}>
+              Delete
+            </td>
+          </tr> 
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 NodeStyles.OpaqueNode = ({ data }: any) => {
 
@@ -40,7 +81,17 @@ NodeStyles.OpaqueNode = ({ data }: any) => {
 
 NodeStyles.TableNode = ({ data }: any) => {
 
-  let testColor: string = 'green';
+  let color: string = 'white';
+  switch(data.statementType){
+    case 'Select' : color = 'green' 
+    break;
+    case 'Insert' : color = 'yellow';
+    break;
+    case 'Update' : color = 'orange';
+    break;
+    case 'Delete' : color = 'red';
+    break;
+  }
 
   return (
     <div style={{border: '1px solid black', borderRadius: '0.4rem'}}>
@@ -57,43 +108,15 @@ NodeStyles.TableNode = ({ data }: any) => {
           </tr>
         </thead>
         <tbody style={{backgroundColor: 'white'}}>
-          {data.fields.map((field: any, i: number) => {
+          {data.fields.map((field: any) => {
             if (data.columns.includes(field)){
-              switch (data.statementType){
-                case 'Select' :
                 return <div>
                 <tr>
-                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:`${testColor}`}}>
+                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:`${color}`}}>
                       {field}
                     </td>
                   </tr> 
               </div>
-              case 'Insert' :
-                return <div>
-                <tr>
-                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:'orange'}}>
-                      {field}
-                    </td>
-                  </tr> 
-              </div>
-              case 'Update' :
-                return <div>
-                <tr>
-                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:'yellow'}}>
-                      {field}
-                    </td>
-                  </tr> 
-              </div>
-              case 'Delete' :
-                return <div>
-                <tr>
-                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem', backgroundColor:'red'}}>
-                      {field}
-                    </td>
-                  </tr> 
-              </div>
-              }
-              
             } else{
               return <div>
                 <tr>
