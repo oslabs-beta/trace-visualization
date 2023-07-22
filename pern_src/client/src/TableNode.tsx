@@ -16,20 +16,20 @@ const TableNode = ({ data }: any) => {
         </thead>
         <tbody style={{backgroundColor: 'white'}}>
           {data.fields.map((field: any, i: number) => {
-            console.log(data.queryInfo)
-            return switch(data.queryInfo.statementType)
-            case('Select') 
-            <tr>
-              <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem'}}>
-                {field}
-              </td>
-            </tr> 
-            <tr>
-              <td style={{color: 'black', borderBottom: '1px solid #dbdbdb', backgroundColor:'green'}}>
-                {field}
-              </td>
-            </tr>
-          })}
+            return (i === data.fields.length) 
+                  ? 
+                  <tr>
+                    <td style={{color: 'black', borderBottom: 'none', borderBottomLeftRadius: '0.4rem', borderBottomRightRadius: '0.4rem'}}>
+                      {field}
+                    </td>
+                  </tr> 
+                  : 
+                  <tr>
+                    <td style={{color: 'black', borderBottom: '1px solid #dbdbdb', backgroundColor:'green'}}>
+                      {field}
+                    </td>
+                  </tr>
+                })}
         </tbody>
       </table>
     </div>

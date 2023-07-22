@@ -12,7 +12,6 @@ interface Props {
 }
 
 const DatabaseDiagram = ({ tables }: Props) => {
-  console.log(tables)
   const nodeTypes = useMemo(() => ({ tableNode: TableNode }), []);
 
   const queryInfo : any = {
@@ -30,13 +29,40 @@ const DatabaseDiagram = ({ tables }: Props) => {
       ]
       }
   }
-  const nodes: Node[] = Object.keys(tables).map((key, i) => (
-    {
-      id: i.toString(),
+
+  const nodeType = (key: string, i : number, queryInfo: any) => {
+    //this logic pertains to if the columns from the database appear in the query
+    if (Object.keys(queryInfo.columns).includes(key)){
+      switch (queryInfo.statementType){
+      case 'Select' :
+        return {
+          id: i.toString(),
+        position: { x: i * 150, y: 50 },
+        data: { tableName: key, fields: tables[key], columns: queryInfo.columns[key]},
+        type: 'tableNode',
+        }
+      default :
+      return {
+        id: i.toString(),
       position: { x: i * 150, y: 0 },
       data: { tableName: key, fields: tables[key], queryInfo: queryInfo},
       type: 'tableNode',
+      }
     }
+    }
+
+    //this logic pertains to if the columns from the database do not appear in the query, apply opaque
+    else{
+      return {
+        id: i.toString(),
+      position: { x: i * 150, y: 100 },
+      data: { tableName: key, fields: tables[key], queryInfo: queryInfo},
+      type: 'tableNode',
+      }
+    }
+  }
+  const nodes : Node[] = Object.keys(tables).map((key, i) => (
+    nodeType(key, i, queryInfo)
   ))
   return (
     <div style={{ height: '44vh' }}>
