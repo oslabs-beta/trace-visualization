@@ -12,18 +12,32 @@ interface Props {
 }
 
 const DatabaseDiagram = ({ tables }: Props) => {
-
+  console.log(tables)
   const nodeTypes = useMemo(() => ({ tableNode: TableNode }), []);
 
+  const queryInfo : any = {
+    SQL_Query : ` SELECT holdings.holder_id AS user_id, holdings.stock_quantity, stocks.stock_id, stocks.ticker, stocks.company_name, stocks.closing_price, stocks.last_updated FROM "holdings" LEFT JOIN "stocks" ON "holdings"."stock_id"="stocks"."stock_id" WHERE "holder_id"=$1
+    `,
+    statementType : 'Select',
+    columns : {
+      holdings: [ 'holder_id', 'stock_quantity' ],
+      stocks: [
+        'stock_id',
+        'ticker',
+        'company_name',
+        'closing_price',
+        'last_updated'
+      ]
+      }
+  }
   const nodes: Node[] = Object.keys(tables).map((key, i) => (
     {
       id: i.toString(),
       position: { x: i * 150, y: 0 },
-      data: { tableName: key, fields: tables[key]},
+      data: { tableName: key, fields: tables[key], queryInfo: queryInfo},
       type: 'tableNode',
     }
   ))
-
   return (
     <div style={{ height: '44vh' }}>
       <ReactFlow nodes={nodes} nodeTypes={nodeTypes}>

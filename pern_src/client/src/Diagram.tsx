@@ -10,7 +10,7 @@ import SequenceDiagram from './SequenceDiagram';
 import DatabaseDiagram from './DatabaseDiagram';
 import isValidUri from './utils/validateUri';
 import getTableData from './services/databaseService';
-import queryParser from './pages/services/queryParserService';
+// import queryParser from './pages/services/queryParserService';
 
 interface Props {
 	stackData: DataObject;
@@ -20,10 +20,26 @@ const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
 	const [pgUri, setPgUri] = React.useState('');
 	const [tables, setTables] = React.useState({});
-	const [queryInfo, setQueryInfo] = React.useState('')
-	console.log(stackData.data.sqlQuery)
+	const [queryInfo, setQueryInfo] = React.useState({})
+	
+	
 	useEffect(() => {
-
+		const mockQueryInfo : any = {
+			SQL_Query : ` SELECT holdings.holder_id AS user_id, holdings.stock_quantity, stocks.stock_id, stocks.ticker, stocks.company_name, stocks.closing_price, stocks.last_updated FROM "holdings" LEFT JOIN "stocks" ON "holdings"."stock_id"="stocks"."stock_id" WHERE "holder_id"=$1
+			`,
+			statementType : 'Select',
+			columns : {
+				holdings: [ 'holder_id', 'stock_quantity' ],
+				stocks: [
+				  'stock_id',
+				  'ticker',
+				  'company_name',
+				  'closing_price',
+				  'last_updated'
+				]
+			  }
+		}
+		setQueryInfo(mockQueryInfo)
 		const fetchData = async () => {
 			if (isValidUri(pgUri)) {
 				const data = await getTableData(pgUri)
@@ -31,8 +47,7 @@ const Diagram = ({ stackData }: Props) => {
 			}
 		}
 		fetchData();
-		const queryData = queryParser(stackData.data.sqlQuery)
-	},[pgUri, stackData.data.sqlQuery])
+	},[pgUri])
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
