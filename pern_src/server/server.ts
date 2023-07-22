@@ -29,6 +29,9 @@ app.post('/v1/traces', (req, res) => {
   res.sendStatus(200);
 })
 
+app.get('/api/getParsedQuery/:query', databaseController.parseQuery, (req, res) => {
+  return res.status(200).json(res.locals.parsedQuery);
+})
 //global error handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.log(err);
