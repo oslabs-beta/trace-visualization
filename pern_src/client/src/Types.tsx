@@ -7,5 +7,6 @@ export interface DataObject {
 		route: string;
 		sqlQuery: string;
 		statusCode: number | undefined;
+		date: string;
 	};
 }
