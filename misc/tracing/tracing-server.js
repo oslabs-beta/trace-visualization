@@ -5,7 +5,7 @@ const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
 
 //Open Telemetry Auto Instrumentation
 const sdk = new NodeSDK({
-	serviceName: 'invest-with-friends',
+	serviceName: 'my-app',
 	traceExporter: new OTLPTraceExporter({ url: 'http://localhost:12720/v1/traces' }),
 	instrumentations: [new HttpInstrumentation(), new PgInstrumentation()],
 });
