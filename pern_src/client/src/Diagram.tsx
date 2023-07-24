@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, TextField, InputAdornment, IconButton } from '@mui/material';
 import { Container } from '@mui/system';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -11,6 +11,7 @@ import DatabaseDiagram from './DatabaseDiagram';
 import isValidUri from './utils/validateUri';
 import getTableData from './services/databaseService';
 import queryParser from './services/queryParserService';
+import SearchIcon from '@mui/icons-material/Search';
 
 interface Props {
 	stackData: DataObject;
@@ -20,30 +21,28 @@ const Diagram = ({ stackData }: Props) => {
 	const [value, setValue] = React.useState('1');
 	const [pgUri, setPgUri] = React.useState('');
 	const [tables, setTables] = React.useState({});
-	const [queryInfo, setQueryInfo] = React.useState({})
+	const [queryInfo, setQueryInfo] = React.useState({});
 
 	useEffect(() => {
-
 		const fetchData = async () => {
 			if (isValidUri(pgUri)) {
-				const data = await getTableData(pgUri)
+				const data = await getTableData(pgUri);
 				setTables(data);
 			}
-		}
+		};
 
 		fetchData();
-	},[pgUri])
+	}, [pgUri]);
 
 	useEffect(() => {
 		const fetchQueryData = async () => {
-			if (stackData.data.sqlQuery){
-				const queryData = await queryParser(stackData.data.sqlQuery)
-			setQueryInfo(queryData);
+			if (stackData.data.sqlQuery) {
+				const queryData = await queryParser(stackData.data.sqlQuery);
+				setQueryInfo(queryData);
 			}
-
-		}
+		};
 		fetchQueryData();
-	},[stackData.data.sqlQuery])
+	}, [stackData.data.sqlQuery]);
 
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
@@ -86,14 +85,22 @@ const Diagram = ({ stackData }: Props) => {
 									},
 								}}>
 								<Tab sx={{ pr: 4 }} label="Sequence Diagram" value="1" />
-								<Tab sx={{ pr: 4 }} label="ER Diagram" value="2" />
+								<Tab sx={{ pr: 4 }} label="Database Diagram" value="2" />
 							</TabList>
-							<TextField 
-								variant='filled'
-								sx = {{
-								}}
-								label='PG URI'
+							<TextField
+								variant="outlined"
+								sx={{ flex: 1, maxWidth: 325, marginBottom: '10px' }}
+								label="PG URI"
 								onChange={handleInput}
+								InputProps={{
+									endAdornment: (
+										<InputAdornment position="end">
+											<IconButton>
+												<SearchIcon />
+											</IconButton>
+										</InputAdornment>
+									),
+								}}
 							/>
 						</Box>
 						<Box
@@ -108,9 +115,7 @@ const Diagram = ({ stackData }: Props) => {
 								<SequenceDiagram stackData={stackData} />
 							</TabPanel>
 							<TabPanel value="2" sx={{ flex: 1, padding: 1 }}>
-								<div style={{ width: '81vw'}}>
-									<DatabaseDiagram tables={tables} queryInfo={queryInfo}/>
-								</div>
+								<DatabaseDiagram tables={tables} queryInfo={queryInfo} />
 							</TabPanel>
 						</Box>
 					</TabContext>

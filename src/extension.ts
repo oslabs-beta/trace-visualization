@@ -13,13 +13,15 @@ interface DataObject {
 	statusCode: string;
 }
 
+let allDataFromWebview: DataObject[] = [];
+
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
 			// VS Code extension enabled message
-			vscode.window.showInformationMessage('Your VS Code extension, VizStacks, has been enabled.');
+			vscode.window.showInformationMessage('Your VS Code extension, Trace Visualization, has been enabled.');
 
 			// Access workspace of the user
 			const workspaceFolders = vscode.workspace.workspaceFolders;

@@ -23,7 +23,6 @@ interface Props {
 
 const History = ({ stackData, allData }: Props) => {
 	const Row = ({ row }: { row: DataObject; index: number }) => {
-		console.log(row);
 		const [open, setOpen] = useState(false);
 		const { route, date } = row.data;
 

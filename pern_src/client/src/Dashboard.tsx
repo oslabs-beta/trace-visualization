@@ -19,19 +19,6 @@ declare const acquireVsCodeApi: any;
 
 const Dashboard = ({ stackData, allData }: Props) => {
 	const [value, setValue] = React.useState('1');
-	// const vscode = acquireVsCodeApi();
-
-	// useEffect(() => {
-	// 	const allDataString = JSON.stringify(allData);
-	// 	const expirationInDays = 30; // Set your desired expiration time here
-	// 	vscode.postMessage({
-	// 		command: 'setCookie',
-	// 		name: 'allData',
-	// 		value: allDataString,
-	// 		expiration: expirationInDays,
-	// 	});
-	// }, [allData]);
-
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
 	};
