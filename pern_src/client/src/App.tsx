@@ -1,51 +1,66 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
-import Webview from "../src/pages/Webview";
-import socket from "./socket-connection";
-import { Box, Typography } from "@mui/material";
-import { DataObject } from "./Types";
+import React, { useEffect, useState } from 'react';
+import './App.css';
+import Webview from '../src/pages/Webview';
+import socket from './socket-connection';
+import { Box, Typography } from '@mui/material';
+import { DataObject } from './Types';
 
 function App() {
-  const [socketId, setSocketId] = useState("");
-  const [allData, setAllData] = useState<DataObject[]>([]);
-  const [stackData, setStackData] = useState<DataObject>({
-    data: {
-      executionTime: "",
-      httpMethod: "",
-      requestPayload: undefined,
-      responseData: undefined,
-      route: "",
-      sqlQuery: "",
-      statusCode: undefined,
-    },
-  });
+	const options: Intl.DateTimeFormatOptions = {
+		weekday: 'long',
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+		hour: 'numeric',
+		minute: 'numeric',
+		second: 'numeric',
+		timeZoneName: 'short',
+	};
+	const date = new Date().toLocaleString('en-US', options);
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      setSocketId(socket.id);
-      socket.emit("socketId", { data: socket.id });
-      console.log("new connection: ", `id ${socket.id}: `, socket);
-    });
+	const [socketId, setSocketId] = useState('');
+	const [allData, setAllData] = useState<DataObject[]>([]);
+	const [stackData, setStackData] = useState<DataObject>({
+		data: {
+			executionTime: '',
+			httpMethod: '',
+			requestPayload: undefined,
+			responseData: undefined,
+			route: '',
+			sqlQuery: '',
+			statusCode: undefined,
+			date: date,
+		},
+	});
+	// console.log(stackData);
+	// console.log(allData);
 
-    socket.on("interaction", (data) => {
-      setStackData(data);
-      setAllData([...allData, data]);
-    });
+	useEffect(() => {
+		socket.on('connect', () => {
+			setSocketId(socket.id);
+			socket.emit('socketId', { data: socket.id });
+			console.log('new connection: ', `id ${socket.id}: `, socket);
+		});
 
-    socket.on("disconnect", () => {
-      console.log(`id ${socketId} disconnected`);
-    });
-  }, [socketId, stackData]);
+		socket.on('interaction', (data) => {
+			setStackData({ data: { ...data.data, date: date } });
+			setAllData([...allData, { data: { ...data.data, date: date } }]);
+		});
 
-  return (
-    <>
-      <Box sx={{ background: "#EEEEEE", maxWidth: "auto" }}>
-        <div className="webview">
-          <Webview stackData={stackData} allData={allData} />
-        </div>
-      </Box>
-    </>
-  );
+		socket.on('disconnect', () => {
+			console.log(`id ${socketId} disconnected`);
+		});
+	}, [socketId, stackData]);
+
+	return (
+		<>
+			<Box sx={{ background: '#EEEEEE', maxWidth: 'auto' }}>
+				<div className="webview">
+					<Webview stackData={stackData} allData={allData} />
+				</div>
+			</Box>
+		</>
+	);
 }
 
 export default App;
