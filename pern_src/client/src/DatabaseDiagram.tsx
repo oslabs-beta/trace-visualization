@@ -8,15 +8,22 @@ interface Tables {
 }
 
 interface QueryInfo {
-	[key: string]: any[];
+	[key: string]: any;
 }
 
 interface Props {
 	tables: Tables;
 	queryInfo: QueryInfo;
 }
-
 const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
+	
+	//if a delete statement is used, populate the columns array with all columns
+	if (queryInfo.statementType === 'Delete'){
+		const table = Object.keys(queryInfo.columns)[0];
+		for (let i = 0; i < tables[table].length; i++){
+			queryInfo.columns[table].push(tables[table][i])
+		}
+	}
 	const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode, legendNode: NodeStyles.LegendNode }), []);
 	const defaultViewport = { x: 0, y: 0, zoom: 1 };
 
