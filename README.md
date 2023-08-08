@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/oslabs-beta/trace-visualization">
+  <a>
     <img src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/trace.png" alt="Logo" height="250">
   </a>
   <h1 align="center"><b>Trace</b></h1>
@@ -16,9 +16,8 @@
 
 <!-- BADGES -->
 <div align="center">      
-    Install Trace</a>
+    Trace v1.0</a>
     </span></u></b>
-    <p>v1.0</p>
 </div>
 
 <hr>
