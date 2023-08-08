@@ -9,18 +9,16 @@
 </p>
 
   <h2 align="center">
-    A VS Code extension that provides developers with real-time visualization of the data flow of RESTful API applications.
+    VS Code extension that provides developers with real-time visualization of the data flow of RESTful API applications.
     <br />
     <br />
   </h2>
 
 <!-- BADGES -->
 <div align="center">      
-  <!-- VSCode Installs -->
-    <b><u><span><a href="https://marketplace.visualstudio.com/items?itemName=ReacTreeDev.reactree">
     Install Trace</a>
     </span></u></b>
-    <p><img src="https://img.shields.io/visual-studio-marketplace/v/reactreedev.reactree"></p>
+    <p>v1.0</p>
 </div>
 
 <hr>
@@ -40,9 +38,7 @@
     <li><a href="#license">License</a></li>
   </ol>
 </details>
-
 <hr>
-<br/>
 
 ## <b>Overview</b>
 
@@ -52,8 +48,10 @@ Trace is a VS Code extension that visualizes the data flow of RESTful API applic
 <br/>
 <p align="center">
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/database-diagram.png" width=90% >
+  <br/>
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/sequence-diagram.png" width=90% >
 </p>
+<br/>
 
 ## <b>Installation / Getting Started</b>
 
@@ -66,6 +64,7 @@ After following installation steps perform the following:
 3. Run `npm install && cd pern_src/client && npm install && cd ../server && npm install`. This will npm install node modules in the root, client, and server folders.
 4. Run `npm run dev` in root directory of extension.
 5. Ensure you have 'extension.ts' selected in left menu bar, and click 'Run and Debug'.
+   <br/>
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
 6. Copy and paste `tracing-client.js` into the client src folder where the package.json is located.
 7. Copy and paste `tracing-server.js` or `tracing-server.ts` into the server src folder where the package.json is location.
@@ -85,6 +84,7 @@ or
 11. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
 12. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
     <br/>
+    <br/>
 
 ## <b>Functionality</b>
 
@@ -92,15 +92,16 @@ or
 - The sequence diagram will render once the application executes an http request.
 - Request performance data can be viewed by navigating to the 'Performance' tab. For each unique route, an average response time for every request made during the session is displayed.
 - Request History data can be viewed by navigating to the 'History' tab. Each request executed during the session is displayed along with a timestamp.
+<br>
 <p align="center">
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/main.gif" width=90% >
 </p>
+
 - PostgreSQL database data can be viewed by pasting the PGURI in the field located at the top right of the Webview. This can not be done using keyboard shortcuts, use VS Code's edit menu instead. Once the PGURI has been entered, navigate to the 'Database Diagram' tab. For each request containing a SQL query, the fields accessed by the query will be highlighted.
+<br>
 <p align="center">
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/secondary.gif" width=90% >
 </p>
-<br/>
-<br/>
 
 ## <b>Tech Stack</b>
 
@@ -123,8 +124,6 @@ or
 ## <b>Articles</b>
 
 Check out our <a href="https://medium.com/">medium article</a> for more information on Trace Visualization.
-<br/>
-<br/>
 
 ## <b>Contributing</b>
 
@@ -136,7 +135,6 @@ Thank you!
       <br />
       <a href="https://github.com/oslabs-beta/trace-visualization/issues">Report Bug / Request Feature</a>
   </p>
-<br/>
 
 ## <b>Meet Our Team</b>
 
@@ -144,8 +142,6 @@ Thank you!
 - Kevin Yoon • [LinkedIn](https://www.linkedin.com/in/kevinjyoon/) • [Github](https://github.com/kyoon0)
 - Ted Chu • [LinkedIn](https://www.linkedin.com/in/tedcchu/) • [Github](https://github.com/tcchu)
 - Scott Deutsch • [LinkedIn](https://www.linkedin.com/in/scott-a-deutsch/) • [Github](https://github.com/scottdeutsch40)
-
-<br/>
 
 ## <b>License</b>
 
