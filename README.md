@@ -46,9 +46,9 @@ Trace is a VS Code extension that visualizes the data flow of RESTful API applic
 </p>
 <br/>
 <p align="center">
-  <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/database-diagram.png" width=90% >
-  <br/>
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/sequence-diagram.png" width=90% >
+  <br/>
+  <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/database-diagram.png" width=90% >
 </p>
 <br/>
 
