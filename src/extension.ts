@@ -1,8 +1,5 @@
 import * as vscode from 'vscode';
 
-let webPanel: vscode.WebviewPanel | undefined;
-let socketData: DataObject | undefined;
-
 interface DataObject {
 	executionTime: string;
 	httpMethod: string;
@@ -12,6 +9,9 @@ interface DataObject {
 	sqlQuery: string;
 	statusCode: string;
 }
+
+let webPanel: vscode.WebviewPanel | undefined;
+let socketData: DataObject | undefined;
 
 let allDataFromWebview: DataObject[] = [];
 
