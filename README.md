@@ -9,7 +9,7 @@
 </p>
 
   <h2 align="center">
-    VS Code extension that provides developers with real-time visualization of the data flow of RESTful API applications.
+    VS Code extension providing developers with real-time visualization of the data flow of RESTful API applications.
     <br />
     <br />
   </h2>
@@ -53,8 +53,6 @@ Trace is a VS Code extension that visualizes the data flow of RESTful API applic
 <br/>
 
 ## <b>Installation / Getting Started</b>
-
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
 After following installation steps perform the following:
 
