@@ -64,6 +64,7 @@ After following installation steps perform the following:
 4. Run `npm run dev` in root directory of extension.
 5. Ensure you have 'extension.ts' selected in left menu bar, and click 'Run and Debug'.
    <br/>
+   <br/>
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
 6. Copy and paste `tracing-client.js` into the client src folder where the package.json is located.
 7. Copy and paste `tracing-server.js` or `tracing-server.ts` into the server src folder where the package.json is location.
