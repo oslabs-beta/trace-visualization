@@ -92,13 +92,13 @@ or
 - The sequence diagram will render once the application executes an http request.
 - Request performance data can be viewed by navigating to the 'Performance' tab. For each unique route, an average response time for every request made during the session is displayed.
 - Request History data can be viewed by navigating to the 'History' tab. Each request executed during the session is displayed along with a timestamp.
-<br>
+<br/>
 <p align="center">
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/main.gif" width=90% >
 </p>
 
 - PostgreSQL database data can be viewed by pasting the PGURI in the field located at the top right of the Webview. This can not be done using keyboard shortcuts, use VS Code's edit menu instead. Once the PGURI has been entered, navigate to the 'Database Diagram' tab. For each request containing a SQL query, the fields accessed by the query will be highlighted.
-<br>
+<br/>
 <p align="center">
   <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/secondary.gif" width=90% >
 </p>
