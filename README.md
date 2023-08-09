@@ -92,12 +92,12 @@ node --require ./tracing-server.js server_fileName.js
 or
 
 ```
-npx ts-node --require ./instrumentation.ts server_fileName.ts
+npx ts-node --require ./tracing-server.ts server_fileName.ts
 ```
-
-13. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
-14. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
-15. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
+13. Spin up the local workspace's development server.
+14. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
+15. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
+16. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
     <br/>
     <br/>
 
