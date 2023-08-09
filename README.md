@@ -70,16 +70,20 @@ npm install && cd pern_src/client && npm install && cd ../server && npm install
    <br/>
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
 6. When 'Extension Development Host' window opens up, open the local workspace you want to run the extension on.  
-7. Copy and paste `tracing-client.js` or `tracing-client.ts` into the folder where the package.json for the client is located.  If there is only one package.json in your local workspace, use that respective folder.  
-8. Copy and paste `tracing-server.js` or `tracing-server.ts` into the folder where the package.json for the server is located.  If there is only one package.json in your local workspace, use that respective folder.  
-9. Open terminal window in the 'Extension Development Host' window.
-10. Within the developer's local workspace, navigate to the folder where package.json for the server is located, and run the following command in the terminal:
+7. Copy and paste `tracing-client.js` from misc/tracing into the directory containing index.html in the local workspace.
+8. Add the following script to the bottom of the index.html:
+```
+<script type="module" src="/tracing-client.js"></script>
+```
+9. Copy and paste `tracing-server.js` or `tracing-server.ts` from misc/tracing into the same directory as the package.json that contains server dependencies in the local workspace. 
+10. Open terminal window in the 'Extension Development Host' window.
+11. Within the developer's local workspace, install the necessary server dependencies:
 
 ```
 npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otlp-http@0.41.1 @opentelemetry/instrumentation-http@0.41.1 @opentelemetry/instrumentation-pg@0.36.0 @opentelemetry/sdk-trace-node@1.15.1 @opentelemetry/sdk-trace-base@1.15.1
 ```
 
-11. Run the application as intended, with the exception of replacing the command that starts the server file to:
+12. Run the application as intended, with the exception of replacing the command that starts the server file to:
 
 ```
 node --require ./tracing-server.js server_fileName.js
@@ -91,9 +95,9 @@ or
 npx ts-node --require ./instrumentation.ts server_fileName.ts
 ```
 
-12. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
-13. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
-14. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
+13. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
+14. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
+15. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
     <br/>
     <br/>
 
@@ -151,8 +155,8 @@ Thank you!
 
 - Kevin Featherstone • [LinkedIn](https://www.linkedin.com/in/featherstone-kevin/) • [Github](https://github.com/kevin-featherstone)
 - Kevin Yoon • [LinkedIn](https://www.linkedin.com/in/kevinjyoon/) • [Github](https://github.com/kyoon0)
-- Ted Chu • [LinkedIn](https://www.linkedin.com/in/tedcchu/) • [Github](https://github.com/tcchu)
 - Scott Deutsch • [LinkedIn](https://www.linkedin.com/in/scott-a-deutsch/) • [Github](https://github.com/scottdeutsch40)
+- Ted Chu • [LinkedIn](https://www.linkedin.com/in/tedcchu/) • [Github](https://github.com/tcchu)
 
 ## <b>License</b>
 
