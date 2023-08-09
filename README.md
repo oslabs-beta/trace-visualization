@@ -58,22 +58,28 @@ After following installation steps perform the following:
 
 1. Clone the Trace repository onto the user's local machine.
 2. Open Trace repo in Visual Studio Code.
-3. Run `npm install && cd pern_src/client && npm install && cd ../server && npm install`. This will npm install node modules in the root, client, and server folders.
+3. Run the following command in the terminal. This will npm install node modules in the root, client, and server folders:
+
+```
+npm install && cd pern_src/client && npm install && cd ../server && npm install
+```
+   
 4. Run `npm run dev` in root directory of extension.
 5. Ensure you have 'extension.ts' selected in left menu bar, and click 'Run and Debug'.
    <br/>
    <br/>
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
-6. Copy and paste `tracing-client.js` into the client src folder where the package.json is located.
-7. Copy and paste `tracing-server.js` or `tracing-server.ts` into the server src folder where the package.json is located.
-8. When ‘Extension host’ window opens up, open terminal window.
-9. Within the server folder of developer's local workspace, run the following command in the terminal
+6. When 'Extension Development Host' window opens up, open the local workspace you want to run the extension on.  
+7. Copy and paste `tracing-client.js` or `tracing-client.ts` into the folder where the package.json for the client is located.  If there is only one package.json in your local workspace, use that respective folder.  
+8. Copy and paste `tracing-server.js` or `tracing-server.ts` into the folder where the package.json for the server is located.  If there is only one package.json in your local workspace, use that respective folder.  
+9. Open terminal window in the 'Extension Development Host' window.
+10. Within the developer's local workspace, navigate to the folder where package.json for the server is located, and run the following command in the terminal:
 
 ```
 npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otlp-http@0.41.1 @opentelemetry/instrumentation-http@0.41.1 @opentelemetry/instrumentation-pg@0.36.0 @opentelemetry/sdk-trace-node@1.15.1 @opentelemetry/sdk-trace-base@1.15.1
 ```
 
-10. Run the application as intended, with the exception of replacing the command that starts the server file to:
+11. Run the application as intended, with the exception of replacing the command that starts the server file to:
 
 ```
 node --require ./tracing-server.js server_fileName.js
@@ -85,8 +91,9 @@ or
 npx ts-node --require ./instrumentation.ts server_fileName.ts
 ```
 
-11. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
-12. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
+12. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
+13. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
+14. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
     <br/>
     <br/>
 
