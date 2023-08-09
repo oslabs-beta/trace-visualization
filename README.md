@@ -71,7 +71,7 @@ npm install && cd pern_src/client && npm install && cd ../server && npm install
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
 6. When 'Extension Development Host' window opens up, open the local workspace you want to run the extension on.  
 7. Copy and paste `tracing-client.js` from misc/tracing into the directory containing index.html in the local workspace.
-8. Add the following script to the bottom of the index.html:
+8. Add the following script to the bottom of index.html body:
 ```
 <script type="module" src="/tracing-client.js"></script>
 ```
