@@ -93,7 +93,7 @@ npx ts-node --require ./instrumentation.ts server_fileName.ts
 ## <b>Functionality</b>
 
 - Once the OpenTelemetry dependencies and tracing files have been installed in the local application workspace, the Trace Webview panel can be accessed via the right click menu or command palette within VS Code.
-- The sequence diagram will render once the application executes an http request.
+- The 'Sequence Diagram' tab and 'Results' tab will render once the application executes an http request, providing detailed information on each request.  
 - Request performance data can be viewed by navigating to the 'Performance' tab. For each unique route, an average response time for every request made during the session is displayed.
 - Request History data can be viewed by navigating to the 'History' tab. Each request executed during the session is displayed along with a timestamp.
 <br/>
