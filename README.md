@@ -65,7 +65,7 @@ After following installation steps perform the following:
    <br/>
    <img  src="https://raw.githubusercontent.com/oslabs-beta/trace-visualization/dev/src/media/installation-step.png" width=90% >
 6. Copy and paste `tracing-client.js` into the client src folder where the package.json is located.
-7. Copy and paste `tracing-server.js` or `tracing-server.ts` into the server src folder where the package.json is location.
+7. Copy and paste `tracing-server.js` or `tracing-server.ts` into the server src folder where the package.json is located.
 8. When ‘Extension host’ window opens up, open terminal window.
 9. Within the server folder of developer's local workspace, run the following command in the terminal
 
@@ -76,7 +76,7 @@ npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otl
 10. Run the application as intended, with the exception of replacing the command that starts the server file to:
 
 ```
-node –require ./tracing-server.js server_fileName.js
+node --require ./tracing-server.js server_fileName.js
 ```
 
 or
