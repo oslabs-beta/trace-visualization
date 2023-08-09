@@ -69,15 +69,21 @@ After following installation steps perform the following:
 8. When ‘Extension host’ window opens up, open terminal window.
 9. Within the server folder of developer's local workspace, run the following command in the terminal
 
-`npm install @opentelemetry/instrumentation @opentelemetry/exporter-trace-otlp-http @opentelemetry/instrumentation-http @opentelemetry/instrumentation-pg @opentelemetry/sdk-trace-node @opentelemetry/sdk-trace-base`
+```
+npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otlp-http@0.41.1 @opentelemetry/instrumentation-http@0.41.1 @opentelemetry/instrumentation-pg@0.36.0 @opentelemetry/sdk-trace-node@1.15.1 @opentelemetry/sdk-trace-base@1.15.1
+```
 
 10. Run the application as intended, with the exception of replacing the command that starts the server file to:
 
-`node –require ./tracing-server.js server_fileName.js`
+```
+node –require ./tracing-server.js server_fileName.js
+```
 
 or
 
-`npx ts-node --require ./instrumentation.ts server_fileName.ts`
+```
+npx ts-node --require ./instrumentation.ts server_fileName.ts
+```
 
 11. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
 12. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
