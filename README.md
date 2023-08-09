@@ -77,13 +77,13 @@ npm install && cd pern_src/client && npm install && cd ../server && npm install
 ```
 9. Copy and paste `tracing-server.js` or `tracing-server.ts` from misc/tracing into the same directory as the package.json that contains server dependencies in the local workspace. 
 10. Open terminal window in the 'Extension Development Host' window.
-11. Within the developer's local workspace, install the necessary server dependencies:
+11. Within the local workspace, install the necessary server dependencies:
 
 ```
 npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otlp-http@0.41.1 @opentelemetry/instrumentation-http@0.41.1 @opentelemetry/instrumentation-pg@0.36.0 @opentelemetry/sdk-trace-node@1.15.1 @opentelemetry/sdk-trace-base@1.15.1
 ```
 
-12. Run the application as intended, with the exception of replacing the command that starts the server file to:
+12. In the local workspace, modify the command that spins up the development server to include the tracing-server wrapper:
 
 ```
 node --require ./tracing-server.js server_fileName.js
