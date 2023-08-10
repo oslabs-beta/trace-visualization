@@ -8,7 +8,7 @@ const app: Express = express();
 const PORT = 12720;
 
 let socketId: string;
-let stackData: any = {};
+let stackData: any = {sqlQuery: null};
 
 //middleware
 app.use(cors({credentials: true,}));
@@ -24,7 +24,7 @@ app.post('/v1/traces', (req, res) => {
   if (Object.keys(stackData).length >= 7) {
     io.to(socketId).emit('interaction', {data: stackData});
     console.log('sending data...');
-    stackData = {};
+    stackData = {sqlQuery: null};
   }
   res.sendStatus(200);
 })
