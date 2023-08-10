@@ -118,19 +118,20 @@ npx ts-node --require ./tracing-server.ts server_fileName.ts
 
 ## <b>Tech Stack</b>
 
-- [OpenTelemetry](https://opentelemetry.io/)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Material-UI](https://mui.com/material-ui/)
-- [React](https://react.dev/)
-- [Chart.js](https://github.com/chartjs)
 - [JavaScript](https://www.javascript.com/)
-- [Typescript](https://www.typescriptlang.org/)
-- [Reactflow](https://reactflow.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
 - [VSCode Extension API](https://code.visualstudio.com/api)
+- [React](https://react.dev/)
+- [Socket.IO](https://socket.io/)
+- [OpenTelemetry](https://opentelemetry.io/)
+- [Webpack](https://webpack.js.org/)
+- [Chart.js](https://github.com/chartjs)
+- [Reactflow](https://reactflow.dev/)
+- [Material-UI](https://mui.com/material-ui/)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Node.js](https://nodejs.org)
 - [Express](https://expressjs.com/)
-- [Socket.IO](https://socket.io/)
-- [Webpack](https://webpack.js.org/)
+
   <br/>
   <br/>
 
