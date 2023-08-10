@@ -16,7 +16,7 @@ interface Props {
 	queryInfo: QueryInfo;
 }
 const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
-	
+
 	//if a delete statement is used, populate the columns array with all columns
 	if (queryInfo.statementType === 'Delete'){
 		const table = Object.keys(queryInfo.columns)[0];
@@ -24,10 +24,19 @@ const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
 			queryInfo.columns[table].push(tables[table][i])
 		}
 	}
+
+	//if a star is used, populate the table
+	if (queryInfo.statementType === 'Select' && !queryInfo.columns[Object.keys(queryInfo.columns)[0]].length){
+		const table = Object.keys(queryInfo.columns)[0];
+		for (let i = 0; i < tables[table].length; i++){
+			queryInfo.columns[table].push(tables[table][i])
+		}
+	}
+
 	const nodeTypes = useMemo(() => ({ opaqueNode: NodeStyles.OpaqueNode, tableNode: NodeStyles.TableNode, legendNode: NodeStyles.LegendNode }), []);
 	const defaultViewport = { x: 0, y: 0, zoom: 1 };
 
-	const nodeType = (key: string, i: number, queryInfo: any) => {
+	const nodeType = (key: string, i: number, queryInfo: QueryInfo) => {
 		//this logic pertains to if the columns from the database appear in the query, giving it the table style
 		if (Object.keys(queryInfo.columns).includes(key)) {
 			return {
