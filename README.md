@@ -27,8 +27,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#installation">Installation</a></li>
-    <li><a href="#getting-started">Getting Started</a></li>
+    <li><a href="#installation-getting-started">Installation / Getting Started</a></li>
     <li><a href="#functionality">Functionality</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
     <li><a href="#articles">Articles</a></li>
@@ -76,14 +75,13 @@ npm install && cd pern_src/client && npm install && cd ../server && npm install
 <script type="module" src="/tracing-client.js"></script>
 ```
 9. Copy and paste `tracing-server.js` or `tracing-server.ts` from misc/tracing into the same directory as the package.json that contains server dependencies in the local workspace. 
-10. Open terminal window in the 'Extension Development Host' window.
-11. Within the local workspace, install the necessary server dependencies:
+10. Within the local workspace, install the necessary server dependencies:
 
 ```
 npm i -D @opentelemetry/instrumentation@0.41.1 @opentelemetry/exporter-trace-otlp-http@0.41.1 @opentelemetry/instrumentation-http@0.41.1 @opentelemetry/instrumentation-pg@0.36.0 @opentelemetry/sdk-trace-node@1.15.1 @opentelemetry/sdk-trace-base@1.15.1
 ```
 
-12. In the local workspace, modify the command that spins up the development server to include the tracing-server wrapper:
+11. In the local workspace, modify the command that spins up the development server to include the tracing-server wrapper:
 
 ```
 node --require ./tracing-server.js server_fileName.js
@@ -94,10 +92,10 @@ or
 ```
 npx ts-node --require ./tracing-server.ts server_fileName.ts
 ```
-13. Spin up the local workspace's development server.
-14. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
-15. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
-16. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
+12. Spin up the local workspace's development server.
+13. On your local workspace (.JS, .JSX, .TS, .TSX), run the command ‘Get Telemetry Log File Workspace” by either right-click or in the command palette via 'CMD + Shift + P' for Mac or 'Ctrl + Shift + P' for Windows.
+14. Interact and make requests in your browser to generate data in Trace Webview VS Code extension.
+15. When on the 'Database Diagram' tab, use VS Code's edit menu to paste the PGURI in the top right field (keyboard shortcuts to paste will not work).  
     <br/>
     <br/>
 
