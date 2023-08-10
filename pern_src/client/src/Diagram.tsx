@@ -43,7 +43,7 @@ const Diagram = ({ stackData }: Props) => {
 		};
 		fetchQueryData();
 	}, [stackData.data.sqlQuery]);
-
+	
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
 	};

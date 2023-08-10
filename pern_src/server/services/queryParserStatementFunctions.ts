@@ -36,7 +36,6 @@ statementController.populateSelectCols = (stmt : any, queryInfo : any, aliasObj 
       //populate the columns
       columns[stmt.fromClause[0].JoinExpr.larg.RangeVar.relname] = [];
       for (let i = 0; i < colsArr.length; i++){
-        // columns[stmt.fromClause[0].RangeVar.relname].push(colsArr[i].ResTarget.name)
         columns[stmt.fromClause[0].JoinExpr.larg.RangeVar.relname].push(colsArr[i].ResTarget.val.ColumnRef.fields[0].String.str)
       } 
     }
@@ -51,8 +50,8 @@ statementController.populateSelectCols = (stmt : any, queryInfo : any, aliasObj 
 
     //populate the columns
     columns[stmt.fromClause[0].RangeVar.relname] = [];
+    if (colsArr[0].ResTarget.val.ColumnRef.fields[0].A_Star) return
     for (let i = 0; i < colsArr.length; i++){
-      // columns[stmt.fromClause[0].RangeVar.relname].push(colsArr[i].ResTarget.name)
       columns[stmt.fromClause[0].RangeVar.relname].push(colsArr[i].ResTarget.val.ColumnRef.fields[0].String.str)
     }
   }

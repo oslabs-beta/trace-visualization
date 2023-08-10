@@ -3,7 +3,6 @@ import { parse } from 'pgsql-parser';
 const statementController = require('./queryParserStatementFunctions')
 
 function queryParser(query : string){
-  if (query.includes('*') === true) return 'Sorry, statements cannot contain "*" '
   const parsedQuery = parse(query);
   const stmt = parsedQuery[0].RawStmt.stmt;
 
