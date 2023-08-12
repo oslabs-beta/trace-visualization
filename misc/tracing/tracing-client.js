@@ -8,7 +8,6 @@ function handleXhrRequest(xhr) {
 	// Override the send method
 	xhr.send = function (data) {
 		// Add your code to capture the request payload data
-		// console.log("XHR Request Payload:", data);
 		xhrData.requestPayload = data;
 
 		// Call the original send method
@@ -17,7 +16,6 @@ function handleXhrRequest(xhr) {
 
 	// Add an event listener for the 'load' event to capture the response
 	xhr.addEventListener('load', function () {
-		// console.log("XHR Response Data:", xhr.responseText);
 		xhrData.responseData = xhr.responseText;
 
 		fetch('http://localhost:12720/v1/traces', {
@@ -30,7 +28,6 @@ function handleXhrRequest(xhr) {
 			.then((response) => response.json())
 			.then((data) => {
 				// Handle the response from the backend
-				console.log('confirmed');
 			});
 	});
 }

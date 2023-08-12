@@ -43,7 +43,6 @@ function queryParser(query : string){
         statementController.populateDeleteCols(stmt[stmtType], queryInfo, aliasObj);
       break;
       default:
-      console.log('Query not recognized')
       break;
   }
   

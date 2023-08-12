@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Webview from '../src/pages/Webview';
 import socket from './socket-connection';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { DataObject } from './Types';
 
 function App() {
@@ -32,14 +32,12 @@ function App() {
 			date: date,
 		},
 	});
-	// console.log(stackData);
-	// console.log(allData);
 
 	useEffect(() => {
 		socket.on('connect', () => {
 			setSocketId(socket.id);
 			socket.emit('socketId', { data: socket.id });
-			console.log('new connection: ', `id ${socket.id}: `, socket);
+			console.log('New Connection: ', `Id ${socket.id}: `, socket);
 		});
 
 		socket.on('interaction', (data) => {
@@ -48,7 +46,7 @@ function App() {
 		});
 
 		socket.on('disconnect', () => {
-			console.log(`id ${socketId} disconnected`);
+			console.log(`Id ${socketId} disconnected`);
 		});
 	}, [socketId, stackData]);
 
