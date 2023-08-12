@@ -48,7 +48,7 @@ function App() {
 		socket.on('disconnect', () => {
 			console.log(`Id ${socketId} disconnected`);
 		});
-	}, [socketId, stackData]);
+	}, [socketId, stackData, allData, date]);
 
 	return (
 		<>

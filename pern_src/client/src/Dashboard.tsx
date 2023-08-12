@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import React from 'react';
+import { Box } from '@mui/material';
 import { Container } from '@mui/system';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
@@ -14,8 +14,6 @@ interface Props {
 	stackData: DataObject;
 	allData: DataObject[];
 }
-
-declare const acquireVsCodeApi: any;
 
 const Dashboard = ({ stackData, allData }: Props) => {
 	const [value, setValue] = React.useState('1');

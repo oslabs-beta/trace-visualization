@@ -1,7 +1,6 @@
 import { DataObject } from './Types';
 import { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-import Chart from 'chart.js/auto';
 import { Bar } from 'react-chartjs-2';
 
 interface Props {
@@ -122,8 +121,12 @@ const Performance = ({ stackData, allData }: Props) => {
 			],
 		};
 		setUpdatedData(updatedData);
+		console.log('average data:', averageData);
 		setExecutionTimeData(averageData);
 	}, [allData]);
+
+	console.log('execution time average:', executionTimeData);
+	console.log('allData:', allData);
 
 	return (
 		<>

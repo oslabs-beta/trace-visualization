@@ -1,5 +1,5 @@
 import { DataObject } from './Types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -14,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Container from '@mui/material/Container';
 
 interface Props {
 	stackData: DataObject;
