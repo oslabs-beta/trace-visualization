@@ -9,14 +9,6 @@ interface Props {
 }
 
 const Performance = ({ stackData, allData }: Props) => {
-	// const executionTime = stackData.data.executionTime;
-	// const requestPayload = JSON.stringify(stackData.data.requestPayload);
-	// const httpMethod = stackData.data.httpMethod;
-	// const route = stackData.data.route;
-	// const sqlQuery = stackData.data.sqlQuery;
-	// const responseData = JSON.stringify(stackData.data.responseData);
-	// const statusCode = stackData.data.statusCode;
-
 	const [updatedData, setUpdatedData] = useState<{
 		labels: string[];
 		datasets: {
