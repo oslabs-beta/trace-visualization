@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import ReactFlow, { Controls, Background, Node } from 'reactflow';
+import ReactFlow, { Controls, Node } from 'reactflow';
 import NodeStyles from './NodeStyles';
 import 'reactflow/dist/style.css';
 
@@ -16,20 +16,19 @@ interface Props {
 	queryInfo: QueryInfo;
 }
 const DatabaseDiagram = ({ tables, queryInfo }: Props) => {
-
 	//if a delete statement is used, populate the columns array with all columns
-	if (queryInfo.statementType === 'Delete'){
+	if (queryInfo.statementType === 'Delete') {
 		const table = Object.keys(queryInfo.columns)[0];
-		for (let i = 0; i < tables[table].length; i++){
-			queryInfo.columns[table].push(tables[table][i])
+		for (let i = 0; i < tables[table].length; i++) {
+			queryInfo.columns[table].push(tables[table][i]);
 		}
 	}
 
 	//if a star is used, populate the table
-	if (queryInfo.statementType === 'Select' && !queryInfo.columns[Object.keys(queryInfo.columns)[0]].length){
+	if (queryInfo.statementType === 'Select' && !queryInfo.columns[Object.keys(queryInfo.columns)[0]].length) {
 		const table = Object.keys(queryInfo.columns)[0];
-		for (let i = 0; i < tables[table].length; i++){
-			queryInfo.columns[table].push(tables[table][i])
+		for (let i = 0; i < tables[table].length; i++) {
+			queryInfo.columns[table].push(tables[table][i]);
 		}
 	}
 

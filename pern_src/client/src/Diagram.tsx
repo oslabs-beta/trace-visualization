@@ -23,6 +23,7 @@ const Diagram = ({ stackData }: Props) => {
 	const [tables, setTables] = React.useState({});
 	const [queryInfo, setQueryInfo] = React.useState({});
 
+	//This useEffect generates all the tables from the SQL database of the associated URI
 	useEffect(() => {
 		const fetchData = async () => {
 			if (isValidUri(pgUri)) {
@@ -34,6 +35,7 @@ const Diagram = ({ stackData }: Props) => {
 		fetchData();
 	}, [pgUri]);
 
+	//This useEffect parses through the SQL query recently emitted
 	useEffect(() => {
 		const fetchQueryData = async () => {
 			if (stackData.data.sqlQuery) {
@@ -43,7 +45,7 @@ const Diagram = ({ stackData }: Props) => {
 		};
 		fetchQueryData();
 	}, [stackData.data.sqlQuery]);
-	
+
 	const handleChange = (event: React.SyntheticEvent, newValue: string) => {
 		setValue(newValue);
 	};

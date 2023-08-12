@@ -1,6 +1,6 @@
 {
 	"name": "vsstack",
-	"displayName": "VSStack",
+	"displayName": "Trace",
 	"description": "Visualize your data as it executes",
 	"version": "0.0.1",
 	"engines": {
@@ -17,7 +17,7 @@
 		"menus": {
 			"editor/context": [
 				{
-					"command": "extension.vsstack.getTelemetryLogFile",
+					"command": "extension.vsstack.launchTrace",
 					"group": "navigation",
 					"when": "resourceLangId == 'javascript' || resourceLangId == 'javascriptreact' || resourceLangId == 'typescript' || resourceLangId == 'typescriptreact'"
 				}
@@ -25,7 +25,7 @@
 		},
 		"commands": [
 			{
-				"command": "extension.vsstack.getTelemetryLogFile",
+				"command": "extension.vsstack.launchTrace",
 				"title": "Enable Trace Visualization"
 			}
 		]
@@ -60,18 +60,7 @@
 		"webpack-cli": "^5.0.2"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.11.1",
-		"@emotion/styled": "^11.11.0",
-		"@mui/material": "^5.13.7",
-		"@mui/styled-engine-sc": "^5.12.0",
-		"axios": "^1.4.0",
 		"bufferutil": "^4.0.7",
-		"concurrently": "^8.2.0",
-		"express": "^4.18.2",
-		"mermaid": "^10.2.3",
-		"pgsql-parser": "^13.5.0",
-		"socket.io": "^4.7.0",
-		"socket.io-client": "^4.7.0",
-		"styled-components": "^5.3.11"
+		"concurrently": "^8.2.0"
 	}
 }

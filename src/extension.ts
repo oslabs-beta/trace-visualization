@@ -11,24 +11,14 @@ interface DataObject {
 }
 
 let webPanel: vscode.WebviewPanel | undefined;
-let socketData: DataObject | undefined;
-
-let allDataFromWebview: DataObject[] = [];
 
 // Activate extension the very first time
 export function activate(context: vscode.ExtensionContext) {
 	// Register the command to get the telemetry log file
 	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.vsstack.getTelemetryLogFile', async () => {
+		vscode.commands.registerCommand('extension.vsstack.launchTrace', async () => {
 			// VS Code extension enabled message
 			vscode.window.showInformationMessage('Your VS Code extension, Trace Visualization, has been enabled.');
-
-			// Access workspace of the user
-			const workspaceFolders = vscode.workspace.workspaceFolders;
-			if (!workspaceFolders) {
-				vscode.window.showErrorMessage('No log file found.');
-				return;
-			}
 
 			// Close the existing panel if it is open
 			if (webPanel) {
@@ -50,10 +40,6 @@ export function activate(context: vscode.ExtensionContext) {
 			if (webPanel) {
 				webPanel.webview.html = getWebviewContent(context);
 			}
-
-			webPanel.onDidDispose(() => {
-				//webpanel close actions
-			});
 		})
 	);
 }
@@ -61,30 +47,30 @@ export function activate(context: vscode.ExtensionContext) {
 function getWebviewContent(context: vscode.ExtensionContext): string {
 	const reactUrl = 'http://localhost:1337';
 	return `
-	  <html>
-	  <head>
-	    <style>
-	      body, html {
-	        margin: 0;
-	        padding: 0;
-	      }
-				#webviewContainer {
-          height: 100vh;
-					background-color: white;
+    <html>
+    <head>
+      <style>
+        body, html {
+          margin: 0;
+          padding: 0;
         }
-	      iframe {
-	        width: 100%;
-	        height: 100%;
-	      }
-	    </style>
-	  </head>
-	  <body>
-			<div id="webviewContainer">
-				<iframe src="${reactUrl}"></iframe>
-			</div>	  
-		</body>
-	</html>
-	`;
+        #webviewContainer {
+          height: 100vh;
+          background-color: white;
+        }
+        iframe {
+          width: 100%;
+          height: 100%;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="webviewContainer">
+        <iframe src="${reactUrl}"></iframe>
+      </div>	  
+    </body>
+  </html>
+  `;
 }
 
 // This method is called when your extension is deactivated
