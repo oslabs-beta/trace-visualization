@@ -27,7 +27,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#installation--getting-started">Installation Getting / Started</a></li>
+    <li><a href="#installation--getting-started">Installation / Getting Started</a></li>
     <li><a href="#functionality">Functionality</a></li>
     <li><a href="#tech-stack">Tech Stack</a></li>
     <li><a href="#articles">Articles</a></li>
